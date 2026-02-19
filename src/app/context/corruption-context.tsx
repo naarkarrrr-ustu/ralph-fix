@@ -1,7 +1,6 @@
-
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type CorruptionContextType = {
   corruptionLevel: number;
@@ -20,6 +19,11 @@ export function CorruptionProvider({ children }: { children: ReactNode }) {
   };
 
   const resetCorruption = () => setCorruptionLevel(0);
+
+  // Sync with CSS variables for global visual effects
+  useEffect(() => {
+    document.documentElement.style.setProperty('--corruption-intensity', (corruptionLevel / 100).toString());
+  }, [corruptionLevel]);
 
   return (
     <CorruptionContext.Provider value={{ corruptionLevel, setCorruptionLevel, increaseCorruption, resetCorruption }}>

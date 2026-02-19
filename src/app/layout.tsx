@@ -1,11 +1,11 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { CorruptionProvider } from './context/corruption-context';
+import { SystemLog } from '@/components/SystemLog';
 
 export const metadata: Metadata = {
-  title: 'ARCADE OS - System Corruption',
-  description: 'A retro arcade OS that is falling apart.',
+  title: 'ARCADE OS - Wrecked Mode',
+  description: 'A cinematic retro arcade OS that is falling apart.',
 };
 
 export default function RootLayout({
@@ -22,12 +22,15 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased bg-background text-foreground overflow-hidden h-screen w-screen relative">
         <CorruptionProvider>
-          {/* Global UI Overlays */}
-          <div className="fixed inset-0 crt-overlay pointer-events-none select-none" />
+          {/* Cinematic Global Overlays */}
+          <div className="fixed inset-0 crt-overlay pointer-events-none z-[9999]" />
           <div className="scanline" />
-          <main className="h-full w-full relative z-10">
+          
+          <main className="h-full w-full relative z-10 pb-10">
             {children}
           </main>
+
+          <SystemLog />
         </CorruptionProvider>
       </body>
     </html>
