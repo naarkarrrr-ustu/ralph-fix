@@ -14,8 +14,11 @@ import { useRouter } from 'next/navigation';
 
 /**
  * Client-side layout wrapper that handles global system logic, 
- * audio, and overlays. Uses a stable container for HUD elements
- * to prevent hydration mismatches caused by sibling order shifts.
+ * audio, and overlays. 
+ * 
+ * To prevent hydration mismatches, we ensure the core structural 
+ * elements (Cabinet and Main) are always rendered, while HUD 
+ * elements are injected only after mounting.
  */
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -47,44 +50,42 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="h-full w-full relative p-4">
-      {/* Global Arcade Frame - Cabinet Exterior (Safe for SSR) */}
+      {/* 1. Global Arcade Frame - Cabinet Exterior (Rendered on Server) */}
       <div className="fixed inset-0 arcade-border pointer-events-none z-[10000]" />
       
-      {/* HUD and Overlays Wrapper - Ensures stable sibling order for hydration */}
-      <div id="arcade-system-hud">
-        {mounted && (
-          <>
-            {/* Top Marquee Bar */}
-            <div className="fixed top-0 left-0 w-full bg-black h-8 z-[10001] border-b border-primary/40 flex items-center overflow-hidden">
-               <div 
-                onClick={handleTitleClick}
-                className="marquee text-[10px] font-bold text-primary tracking-[0.4em] uppercase cursor-pointer select-none"
-               >
-                  LITWAK’S ARCADE OS – FIX IT BEFORE RALPH BREAKS IT • SYSTEM INTEGRITY: CRITICAL • INSERT COIN TO PLAY • RALPH DETECTED • SUGAR RUSH • HERO'S DUTY • FIX-IT FELIX JR. • 
-               </div>
-            </div>
-
-            <SoundToggle />
-            <KonamiOverlay />
-            <BadAnonOverlay />
-            <CupcakeJumpscare />
-            <VirtualGamepad />
-
-            {/* Cinematic Global Overlays */}
-            <div className="fixed inset-0 crt-overlay pointer-events-none z-[9999]" />
-            <div className="scanline" />
-            <div className="crt-curve" />
-            <div className="vignette" />
-            
-            <SystemLog />
-          </>
-        )}
-      </div>
-      
-      {/* Main App Container - Always rendered for SSR consistency */}
+      {/* 2. Main App Container - Always rendered for SSR consistency */}
       <main className="h-full w-full relative z-10 pb-10 pt-8 rounded-[40px] overflow-hidden">
         {children}
       </main>
+
+      {/* 3. HUD and Overlays - Client-Only Injection to avoid tree-order mismatches */}
+      {mounted && (
+        <div id="arcade-system-hud">
+          {/* Top Marquee Bar */}
+          <div className="fixed top-0 left-0 w-full bg-black h-8 z-[10001] border-b border-primary/40 flex items-center overflow-hidden">
+             <div 
+              onClick={handleTitleClick}
+              className="marquee text-[10px] font-bold text-primary tracking-[0.4em] uppercase cursor-pointer select-none"
+             >
+                LITWAK’S ARCADE OS – FIX IT BEFORE RALPH BREAKS IT • SYSTEM INTEGRITY: CRITICAL • INSERT COIN TO PLAY • RALPH DETECTED • SUGAR RUSH • HERO'S DUTY • FIX-IT FELIX JR. • 
+             </div>
+          </div>
+
+          <SoundToggle />
+          <KonamiOverlay />
+          <BadAnonOverlay />
+          <CupcakeJumpscare />
+          <VirtualGamepad />
+
+          {/* Cinematic Global Overlays */}
+          <div className="fixed inset-0 crt-overlay pointer-events-none z-[9999]" />
+          <div className="scanline" />
+          <div className="crt-curve" />
+          <div className="vignette" />
+          
+          <SystemLog />
+        </div>
+      )}
     </div>
   );
 }
