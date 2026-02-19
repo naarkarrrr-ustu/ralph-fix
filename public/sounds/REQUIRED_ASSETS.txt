@@ -1,0 +1,17 @@
+
+ARCADE OS AUDIO ASSET DIRECTORY
+================================
+
+Place your .mp3 files here with the following exact names:
+
+1. coin.mp3      - Credit insert trigger
+2. boot.mp3      - System power-on sequence
+3. click.mp3     - Navigation and selection
+4. glitch.mp3    - Anomaly and corruption events
+5. hammer.mp3    - Repairing fragments
+6. alert.mp3     - Warning popups and jumpscares
+7. death.mp3     - Game over or system failure
+8. shutdown.mp3  - OS termination sequence
+
+Absolute Path Reference:
+/public/sounds/[filename].mp3
