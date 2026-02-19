@@ -17,9 +17,8 @@ import { useRouter } from 'next/navigation';
  * Client-side layout wrapper that handles global system logic, 
  * audio, and overlays. 
  * 
- * FIXED: Stabilized the sibling order between the cabinet border, 
- * the main content, and the client-only HUD elements to prevent 
- * hydration mismatches.
+ * HYDRATION FIX: Ensures all client-side-only elements are rendered 
+ * in a stable container AFTER mounting to prevent Next.js mismatches.
  */
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -34,13 +33,13 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   // Initialize the Konami Code listener globally
   useKonamiCode(
     () => {
-      // SUCCESS
+      // SUCCESS - Developer Mode
       playSound('boot');
       setDevMode(true);
       resetCorruption();
     },
     () => {
-      // FAILURE - Glitch out and reboot
+      // FAILURE - System Crash
       playSound('death');
       increaseCorruption(100);
       setTimeout(() => {
@@ -50,16 +49,16 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="h-full w-full relative p-4">
-      {/* 1. Global Arcade Frame - Static sibling at index 0 (Always rendered) */}
+    <div className="h-full w-full relative p-4 bg-background">
+      {/* 1. Global Arcade Frame - Static sibling at index 0 */}
       <div className="fixed inset-0 arcade-border pointer-events-none z-[10000]" />
       
-      {/* 2. Main App Container - Static sibling at index 1 (Always rendered) */}
+      {/* 2. Main App Container - Static sibling at index 1 */}
       <main className="h-full w-full relative z-10 pb-10 pt-8 rounded-[40px] overflow-hidden">
         {children}
       </main>
 
-      {/* 3. HUD and Overlays Container - Static sibling at index 2 (Client-only contents) */}
+      {/* 3. System HUD Container - Stabilized for Hydration */}
       <div id="arcade-system-hud" className="relative z-[10001]">
         {mounted && (
           <>
