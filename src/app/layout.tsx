@@ -1,7 +1,7 @@
 
 "use client";
 
-import type {Metadata} from 'next';
+import React from 'react';
 import './globals.css';
 import { CorruptionProvider, useCorruption } from './context/corruption-context';
 import { SystemLog } from '@/components/SystemLog';
@@ -12,10 +12,15 @@ import { BadAnonOverlay } from '@/components/BadAnonOverlay';
 import { CupcakeJumpscare } from '@/components/CupcakeJumpscare';
 import { useSoundEffect } from '@/hooks/use-sound-effect';
 
+/**
+ * LayoutContent handles the global state-dependent UI elements and keyboard listeners.
+ * It is wrapped by CorruptionProvider in the root export.
+ */
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const { setDevMode, resetCorruption, handleTitleClick } = useCorruption();
   const { playSound } = useSoundEffect();
 
+  // Initialize the Konami Code listener
   useKonamiCode(() => {
     playSound('boot');
     setDevMode(true);
