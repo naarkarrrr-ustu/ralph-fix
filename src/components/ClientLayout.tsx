@@ -49,12 +49,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* 1. Global Arcade Frame - Static sibling at index 0 */}
       <div className="fixed inset-0 arcade-border pointer-events-none z-[10000]" />
       
-      {/* 2. Main App Container - Always rendered for SSR consistency */}
+      {/* 2. Main App Container - Static sibling at index 1 */}
       <main className="h-full w-full relative z-10 pb-10 pt-8 rounded-[40px] overflow-hidden">
         {children}
       </main>
 
-      {/* 3. System HUD Container - Stabilized for Hydration */}
+      {/* 3. System HUD Container - Stabilized for Hydration at index 2 */}
       <div id="arcade-system-hud">
         {mounted && (
           <div className="relative z-[10001]">
