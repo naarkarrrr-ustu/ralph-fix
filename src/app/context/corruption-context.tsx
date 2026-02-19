@@ -16,6 +16,10 @@ type CorruptionContextType = {
   setBadAnonActive: (active: boolean) => void;
   titleClickCount: number;
   handleTitleClick: () => void;
+  selectedWorld: string | null;
+  setSelectedWorld: (world: string | null) => void;
+  repairComplete: boolean;
+  setRepairComplete: (status: boolean) => void;
 };
 
 const CorruptionContext = createContext<CorruptionContextType | undefined>(undefined);
@@ -26,18 +30,27 @@ export function CorruptionProvider({ children }: { children: ReactNode }) {
   const [isDevMode, setDevMode] = useState(false);
   const [badAnonActive, setBadAnonActive] = useState(false);
   const [titleClickCount, setTitleClickCount] = useState(0);
+  const [selectedWorld, setSelectedWorld] = useState<string | null>(null);
+  const [repairComplete, setRepairComplete] = useState(false);
 
-  const increaseCorruption = useCallback((amount: number) => {
+  // Clamped state update to prevent UI breakage
+  const setClampedCorruption = useCallback((val: number | ((prev: number) => number)) => {
     setCorruptionLevel((prev) => {
-      const next = Math.min(prev + amount, 100);
-      return next;
+      const next = typeof val === 'function' ? val(prev) : val;
+      return Math.min(Math.max(next, 0), 100);
     });
   }, []);
+
+  const increaseCorruption = useCallback((amount: number) => {
+    setClampedCorruption(prev => prev + amount);
+  }, [setClampedCorruption]);
 
   const resetCorruption = useCallback(() => {
     setCorruptionLevel(0);
     setDevMode(false);
     setBadAnonActive(false);
+    setRepairComplete(false);
+    setSelectedWorld(null);
   }, []);
 
   const toggleSound = () => setSoundEnabled(prev => !prev);
@@ -67,7 +80,7 @@ export function CorruptionProvider({ children }: { children: ReactNode }) {
   return (
     <CorruptionContext.Provider value={{ 
       corruptionLevel, 
-      setCorruptionLevel, 
+      setCorruptionLevel: setClampedCorruption, 
       increaseCorruption, 
       resetCorruption,
       soundEnabled,
@@ -77,7 +90,11 @@ export function CorruptionProvider({ children }: { children: ReactNode }) {
       badAnonActive,
       setBadAnonActive,
       titleClickCount,
-      handleTitleClick
+      handleTitleClick,
+      selectedWorld,
+      setSelectedWorld,
+      repairComplete,
+      setRepairComplete
     }}>
       {children}
     </CorruptionContext.Provider>

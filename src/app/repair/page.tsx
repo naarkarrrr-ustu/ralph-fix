@@ -30,7 +30,7 @@ interface Spark {
 
 export default function RepairPage() {
   const router = useRouter();
-  const { increaseCorruption, corruptionLevel, setCorruptionLevel } = useCorruption();
+  const { increaseCorruption, corruptionLevel, setCorruptionLevel, setRepairComplete } = useCorruption();
   const { playSound } = useSoundEffect();
   const [repairProgress, setRepairProgress] = useState(0);
   const [fragments, setFragments] = useState<Fragment[]>([]);
@@ -39,13 +39,12 @@ export default function RepairPage() {
   const [score, setScore] = useState(0);
 
   const spawnFragments = useCallback(() => {
-    // Easier: only 6 fragments at a time instead of 10
     const newFrags = Array.from({ length: 6 }).map((_, i) => ({
       id: Math.random(),
       top: Math.random() * 70 + 15,
       left: Math.random() * 70 + 15,
-      size: Math.random() * 40 + 35, // Slightly larger targets
-      speedX: (Math.random() - 0.5) * (1 + (corruptionLevel / 80)), // Slower movement
+      size: Math.random() * 40 + 35,
+      speedX: (Math.random() - 0.5) * (1 + (corruptionLevel / 80)),
       speedY: (Math.random() - 0.5) * (1 + (corruptionLevel / 80)),
       type: Math.random() > 0.8 ? 'glitch' : 'code',
     } as Fragment));
@@ -72,8 +71,8 @@ export default function RepairPage() {
       setTimeRemaining(prev => {
         if (prev <= 0) {
           playSound('death');
-          increaseCorruption(30);
-          return 35; // Reset timer on death
+          increaseCorruption(15);
+          return 35;
         }
         return prev - 1;
       });
@@ -98,10 +97,10 @@ export default function RepairPage() {
     setScore(prev => prev + (frag.type === 'glitch' ? 500 : 200));
     
     setRepairProgress(prev => {
-      // Easier: 20% progress per click instead of 10%
       const next = prev + 20;
       if (next >= 100) {
-        setTimeout(() => router.push('/restart'), 1200);
+        setRepairComplete(true);
+        setTimeout(() => router.push('/play'), 1200);
         return 100;
       }
       return next;
@@ -163,18 +162,6 @@ export default function RepairPage() {
              <RefreshCw size={400} className="animate-spin duration-[20s]" />
           </div>
 
-          {sparks.map(spark => (
-            <div 
-              key={spark.id}
-              className="absolute z-50 spark-burst flex items-center justify-center"
-              style={{ top: `${spark.top}%`, left: `${spark.left}%` }}
-            >
-               <div className="w-4 h-4 bg-yellow-400 rounded-full blur-sm" />
-               <div className="absolute w-12 h-[1px] bg-yellow-400 rotate-45" />
-               <div className="absolute w-12 h-[1px] bg-yellow-400 -rotate-45" />
-            </div>
-          ))}
-
           {fragments.map((frag) => (
             <button
               key={frag.id}
@@ -200,11 +187,7 @@ export default function RepairPage() {
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-primary/20 backdrop-blur-xl z-50 animate-in zoom-in duration-700">
                <div className="bg-background p-12 border-4 border-primary arcade-glow text-center space-y-4">
                  <GlitchText text="SYSTEM STABILIZED" className="text-6xl font-black text-primary italic" />
-                 <p className="text-primary font-mono animate-pulse uppercase tracking-widest">REBOOTING_ARCADE_OS...</p>
-                 <div className="flex justify-center gap-4 mt-4">
-                    <Zap className="text-primary animate-bounce" size={48} />
-                    <Hammer className="text-primary animate-bounce delay-150" size={48} />
-                 </div>
+                 <p className="text-primary font-mono animate-pulse uppercase tracking-widest">LOADING_ROM_MODULE...</p>
                </div>
             </div>
           )}

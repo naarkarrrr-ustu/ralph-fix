@@ -14,13 +14,13 @@ import { cn } from '@/lib/utils';
 
 export default function GameSelectPage() {
   const router = useRouter();
-  const { increaseCorruption, corruptionLevel } = useCorruption();
+  const { increaseCorruption, corruptionLevel, setSelectedWorld } = useCorruption();
   const { playSound } = useSoundEffect();
   const [hoveredGame, setHoveredGame] = useState<string | null>(null);
 
   useEffect(() => {
     increaseCorruption(10);
-  }, []);
+  }, [increaseCorruption]);
 
   const games = [
     { 
@@ -51,6 +51,7 @@ export default function GameSelectPage() {
 
   const handleSelect = (id: string) => {
     playSound('click');
+    setSelectedWorld(id);
     router.push('/character');
   };
 
@@ -59,7 +60,6 @@ export default function GameSelectPage() {
       "h-full flex flex-col p-8 space-y-8 max-w-7xl mx-auto transition-all duration-1000 relative",
       corruptionLevel > 40 ? "hue-rotate-15 saturate-150" : ""
     )}>
-      {/* World Themes Overlays */}
       {hoveredGame === 'sugar' && <div className="absolute inset-0 bg-secondary/5 pointer-events-none z-0" />}
       {hoveredGame === 'hero' && <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_20%,rgba(0,255,0,0.05)_100%)] pointer-events-none z-0" />}
 
@@ -116,12 +116,6 @@ export default function GameSelectPage() {
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  
-                  {hoveredGame === game.id && (
-                    <div className="absolute top-2 right-2 bg-black/60 px-2 py-1 border border-primary/40">
-                      <p className="text-[8px] font-mono text-primary animate-pulse tracking-tighter">DATA_STREAM_ACTIVE</p>
-                    </div>
-                  )}
                 </div>
                 
                 <div className="flex-1 space-y-2">
@@ -145,10 +139,6 @@ export default function GameSelectPage() {
           </div>
         ))}
       </div>
-
-      <footer className="text-center py-4 text-[10px] text-muted-foreground/30 font-mono tracking-[0.5em] uppercase relative z-10">
-        RALPH DETECTED • OS DEGRADATION IN PROGRESS • DON'T PANIC
-      </footer>
     </div>
   );
 }

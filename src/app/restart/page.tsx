@@ -30,6 +30,7 @@ export default function RestartPage() {
           return prev + 1;
         });
       }, 40);
+      return () => clearInterval(interval);
     }, 2000);
 
     return () => clearTimeout(timer);
@@ -87,14 +88,8 @@ export default function RestartPage() {
           </div>
           <GlitchText text="SYSTEM STABLE" className="text-6xl font-black text-primary italic" intensity="low" />
           <p className="text-muted-foreground italic text-sm">"Thanks for the fix, brother!" - Felix</p>
-          
-          <div className="mt-12 opacity-5 animate-pulse">
-            <p className="text-[8px] text-secondary font-mono">ralph_was_here.tmp (0 bytes)</p>
-          </div>
         </div>
       )}
-
-      <div className="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-20" />
     </div>
   );
 }
