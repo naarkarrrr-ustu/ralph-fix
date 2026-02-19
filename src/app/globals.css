@@ -35,17 +35,43 @@
 
 @layer utilities {
   .crt-overlay {
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    background-size: 100% 3px, 2px 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+    background-size: 100% 3px, 3px 100%;
     pointer-events: none;
     z-index: 9999;
+  }
+
+  /* Screen Curvature Effect */
+  .crt-curve {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 10000;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+  }
+
+  .vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
+    pointer-events: none;
+    z-index: 9998;
   }
 
   .scanline {
     width: 100%;
     height: 100px;
-    z-index: 9998;
+    z-index: 9997;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
     position: absolute;
     bottom: 100%;
@@ -54,11 +80,13 @@
   }
 
   .arcade-border {
-    border: 8px solid #333;
+    border: 12px solid #222;
+    border-radius: 40px;
     box-shadow: 
-      inset 0 0 20px rgba(0,0,0,0.8),
-      0 0 0 4px #1a1a1a,
-      0 0 15px hsla(var(--primary), 0.3);
+      inset 0 0 50px rgba(0,0,0,0.9),
+      0 0 0 6px #111,
+      0 0 30px hsla(var(--primary), 0.2);
+    overflow: hidden;
   }
 
   .arcade-glow {
@@ -116,8 +144,8 @@
 
   @keyframes glitch-skew {
     0% { transform: skew(0deg); }
-    10% { transform: skew(calc(2deg * var(--corruption-intensity))); }
-    20% { transform: skew(calc(-1deg * var(--corruption-intensity))); }
+    10% { transform: skew(calc(3deg * var(--corruption-intensity))); }
+    20% { transform: skew(calc(-2deg * var(--corruption-intensity))); }
     100% { transform: skew(0deg); }
   }
 
@@ -126,25 +154,25 @@
   }
 
   @keyframes shake-anim {
-    10%, 90% { transform: translate3d(calc(-1px * var(--corruption-intensity)), 0, 0); }
-    20%, 80% { transform: translate3d(calc(2px * var(--corruption-intensity)), 0, 0); }
-    30%, 50%, 70% { transform: translate3d(calc(-3px * var(--corruption-intensity)), 0, 0); }
-    40%, 60% { transform: translate3d(calc(3px * var(--corruption-intensity)), 0, 0); }
+    10%, 90% { transform: translate3d(calc(-2px * var(--corruption-intensity)), 0, 0); }
+    20%, 80% { transform: translate3d(calc(3px * var(--corruption-intensity)), 0, 0); }
+    30%, 50%, 70% { transform: translate3d(calc(-4px * var(--corruption-intensity)), 0, 0); }
+    40%, 60% { transform: translate3d(calc(4px * var(--corruption-intensity)), 0, 0); }
   }
 
   .flicker-dynamic {
-    animation: flicker-anim 0.2s infinite;
+    animation: flicker-anim 0.15s infinite;
   }
 
   @keyframes flicker-anim {
     0% { opacity: 1; }
-    50% { opacity: calc(1 - (0.3 * var(--corruption-intensity))); }
+    50% { opacity: calc(1 - (0.4 * var(--corruption-intensity))); }
     100% { opacity: 1; }
   }
 
   .marquee {
     white-space: nowrap;
-    animation: marquee 20s linear infinite;
+    animation: marquee 25s linear infinite;
   }
 
   @keyframes marquee {
@@ -153,12 +181,12 @@
   }
 
   .sprite-idle {
-    animation: sprite-bounce 2s ease-in-out infinite;
+    animation: sprite-bounce 1.5s ease-in-out infinite;
   }
 
   @keyframes sprite-bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-8px); }
   }
 
   .hammer-cursor {
@@ -171,6 +199,6 @@
 
   @keyframes spark-anim {
     0% { transform: scale(0); opacity: 1; }
-    100% { transform: scale(2); opacity: 0; }
+    100% { transform: scale(2.5); opacity: 0; }
   }
 }
