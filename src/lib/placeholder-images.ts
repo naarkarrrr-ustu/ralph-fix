@@ -11,4 +11,4 @@ export type ImagePlaceholder = {
  * Source of truth for all placeholder images in the application.
  * Imported from src/app/lib/placeholder-images.json
  */
-export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages || [];
+export const PlaceHolderImages: ImagePlaceholder[] = (data as any).placeholderImages || [];
