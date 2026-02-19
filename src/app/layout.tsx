@@ -38,7 +38,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <body className="font-body antialiased bg-background text-foreground overflow-hidden h-screen w-screen relative p-4">
+    <>
       {/* Global Arcade Frame - Cabinet Exterior */}
       <div className="fixed inset-0 arcade-border pointer-events-none z-[10000]" />
       
@@ -70,7 +70,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       </main>
 
       <SystemLog />
-    </body>
+    </>
   );
 }
 
@@ -88,9 +88,11 @@ export default function RootLayout({
         <title>ARCADE OS - Wrecked Mode</title>
         <meta name="description" content="A cinematic retro arcade OS that is falling apart." />
       </head>
-      <CorruptionProvider>
-        <LayoutContent>{children}</LayoutContent>
-      </CorruptionProvider>
+      <body className="font-body antialiased bg-background text-foreground overflow-hidden h-screen w-screen relative p-4">
+        <CorruptionProvider>
+          <LayoutContent>{children}</LayoutContent>
+        </CorruptionProvider>
+      </body>
     </html>
   );
 }
