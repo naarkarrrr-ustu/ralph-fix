@@ -9,6 +9,7 @@ import { ArcadePanel } from '@/components/ArcadePanel';
 import { Progress } from '@/components/ui/progress';
 import { useSoundEffect } from '@/hooks/use-sound-effect';
 import { cn } from '@/lib/utils';
+import { Coins } from 'lucide-react';
 
 export default function BootPage() {
   const [progress, setProgress] = useState(0);
@@ -24,8 +25,15 @@ export default function BootPage() {
 
   const handleInsertCoin = () => {
     setWaitingForCoin(false);
-    playSound('boot');
+    playSound('coin');
     
+    setTimeout(() => {
+      playSound('boot');
+      startBootProcess();
+    }, 500);
+  };
+
+  const startBootProcess = () => {
     const logs = [
       "Initializing Arcade Kernel...",
       "Loading World Modules...",
@@ -34,6 +42,7 @@ export default function BootPage() {
       "Hero's Duty sector: OK",
       "Checking Ralph Integrity... FAILED",
       "Character Ralph.obj out of bounds.",
+      "Turbo signature: NOT FOUND",
       "Attempting bypass... READY"
     ];
 
@@ -63,10 +72,10 @@ export default function BootPage() {
             ARCADE<span className="text-secondary">OS</span>
           </h1>
           <div className="absolute -right-12 top-0 rotate-12">
-            <Badge text="V1.98.2" color="bg-secondary" />
+            <Badge text="LITWAK-3000" color="bg-secondary" />
           </div>
         </div>
-        <GlitchText text="LITWAK'S SYSTEM" className="text-muted-foreground font-mono text-sm tracking-[0.5em] block" />
+        <GlitchText text="PROPERTY OF LITWAK'S ARCADE" className="text-muted-foreground font-mono text-sm tracking-[0.5em] block" />
       </div>
 
       <div className="w-full max-w-lg space-y-6">
@@ -75,14 +84,17 @@ export default function BootPage() {
             onClick={handleInsertCoin}
             className="group cursor-pointer flex flex-col items-center space-y-8 animate-pulse"
           >
-            <div className="w-24 h-24 border-4 border-primary rounded-full flex items-center justify-center text-primary font-black text-3xl group-hover:scale-110 transition-transform arcade-glow">
-              $
+            <div className="w-24 h-24 border-4 border-primary rounded-full flex items-center justify-center text-primary font-black text-3xl group-hover:scale-110 transition-transform arcade-glow bg-black/40">
+              <Coins size={48} />
             </div>
-            <GlitchText 
-              text="INSERT COIN TO START" 
-              className="text-xl font-black text-primary italic tracking-widest"
-              intensity="low"
-            />
+            <div className="text-center space-y-2">
+              <GlitchText 
+                text="INSERT COIN TO START" 
+                className="text-xl font-black text-primary italic tracking-widest"
+                intensity="low"
+              />
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest">CREDITS: 0 / 1</p>
+            </div>
           </div>
         ) : (
           <ArcadePanel title="BOOT_LOADER" className="bg-black/40">
@@ -102,7 +114,7 @@ export default function BootPage() {
       <div className="absolute bottom-16 flex gap-12 text-[10px] font-mono text-muted-foreground/30">
         <p>MEM: 640KB OK</p>
         <p>JOYSTICK_DRIVER: LOADED</p>
-        <p>ANOMALY_DETECTION: BYPASSED</p>
+        <p>BAD_ANON_V3: ACTIVE</p>
       </div>
     </div>
   );

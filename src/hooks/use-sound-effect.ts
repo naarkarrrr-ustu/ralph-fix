@@ -4,7 +4,7 @@
 import { useCallback, useRef, useEffect } from 'react';
 import { useCorruption } from '@/app/context/corruption-context';
 
-type SoundType = 'boot' | 'click' | 'glitch' | 'hammer' | 'alert' | 'shutdown';
+type SoundType = 'boot' | 'click' | 'glitch' | 'hammer' | 'alert' | 'shutdown' | 'coin' | 'death';
 
 export function useSoundEffect() {
   const { soundEnabled, corruptionLevel } = useCorruption();
@@ -12,8 +12,9 @@ export function useSoundEffect() {
 
   useEffect(() => {
     // Preload sounds
-    const sounds: SoundType[] = ['boot', 'click', 'glitch', 'hammer', 'alert', 'shutdown'];
+    const sounds: SoundType[] = ['boot', 'click', 'glitch', 'hammer', 'alert', 'shutdown', 'coin', 'death'];
     sounds.forEach(sound => {
+      // Note: These files must exist in public/sounds/
       const audio = new Audio(`/sounds/${sound}.mp3`);
       audio.preload = 'auto';
       audioRefs.current[sound] = audio;
@@ -27,7 +28,7 @@ export function useSoundEffect() {
     if (audio) {
       audio.currentTime = 0;
       
-      // Apply "glitch" distortion to pitch if corruption is high
+      // Apply distortion logic
       if (corruptionLevel > 50 && (type === 'click' || type === 'alert')) {
         audio.playbackRate = 0.5 + Math.random();
       } else {
@@ -35,7 +36,7 @@ export function useSoundEffect() {
       }
 
       audio.play().catch(() => {
-        // Handle browser autoplay block silently
+        // Fallback or silent fail for browser autoplay policies
       });
     }
   }, [soundEnabled, corruptionLevel]);

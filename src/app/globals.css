@@ -31,6 +31,11 @@
     --glitch-offset: calc(var(--corruption-intensity) * 5px);
     --glitch-speed: 1s;
   }
+
+  .dev-mode {
+    --primary: 300 100% 50%;
+    --secondary: 182 100% 74%;
+  }
 }
 
 @layer utilities {
@@ -42,7 +47,6 @@
     z-index: 9999;
   }
 
-  /* Screen Curvature Effect */
   .crt-curve {
     content: " ";
     display: block;
@@ -51,9 +55,9 @@
     left: 0;
     bottom: 0;
     right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%);
     z-index: 10000;
-    background-size: 100% 2px, 3px 100%;
     pointer-events: none;
   }
 
@@ -200,5 +204,27 @@
   @keyframes spark-anim {
     0% { transform: scale(0); opacity: 1; }
     100% { transform: scale(2.5); opacity: 0; }
+  }
+
+  .pixel-wipe {
+    animation: pixel-wipe-anim 1s steps(10) forwards;
+  }
+
+  @keyframes pixel-wipe-anim {
+    0% { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+  }
+
+  .zoom-distortion {
+    animation: zoom-distort-anim 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes zoom-distort-anim {
+    0% { transform: scale(1); filter: blur(0); }
+    100% { transform: scale(1.1); filter: blur(5px); }
+  }
+
+  .dev-mode .arcade-glow {
+    box-shadow: 0 0 25px hsla(300, 100%, 50%, 0.6);
   }
 }
