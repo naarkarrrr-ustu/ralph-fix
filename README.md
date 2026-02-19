@@ -1,71 +1,144 @@
 # 🕹️ ARCADE OS – System Corruption Mode
 
-**Property of Litwak’s Arcade**  
-*“I’m gonna wreck it!” — Ralph*
-
-Welcome to **ARCADE OS**, a cinematic, fully immersive Next.js 15 simulation of a retro arcade machine operating system that is actively falling apart due to a character-based anomaly (RALPH.OBJ).
+### A Reactive Arcade Operating System Inspired by the Wreck-It Ralph Universe
 
 ---
 
-## 🚀 The Experience
+## 🎯 Overview
 
-This isn't just a website; it's a living arcade cabinet. As you navigate the system, **Corruption (0–100%)** builds up, physically distorting the UI with RGB splits, screen shakes, and audible glitching.
+**ARCADE OS** simulates a networked arcade machine at *Litwak’s Arcade* that is actively being corrupted by Ralph.
 
-### 🛠️ Required Competition Modules
-1.  **Game Selection Screen**: `/game-select` — Choose between Niceland (Felix), Sugar Rush (Vanellope), or Hero's Duty (Calhoun).
-2.  **Character Control Panel**: `/character` — A diagnostic interface where you can "Control" character stability, memory shift, and latency.
-3.  **Glitch Repair System**: `/repair` — An interactive mini-game where you must "hammer" code fragments before the system crashes.
-4.  **Game Status Monitor**: Global footer HUD (`SystemLog.tsx`) — Real-time telemetry of CPU heat, character locations, and "Turbo" activity.
+The system dynamically degrades through a centralized corruption engine and requires the user to:
 
----
+1. Select a ROM
+2. Diagnose the anomaly
+3. Repair system instability
+4. Successfully launch and play the game
+5. Survive corruption resurgence
+6. Perform a full system purge
 
-## 🔄 Official System Flow
-To satisfy the "Wreck-It Ralph" competition requirements, the user must follow this strict operational loop:
-1.  **BOOT**: Insert a coin to power on the Litwak-3000 kernel.
-2.  **SELECT GAME**: Choose a ROM module to simulate.
-3.  **SELECT CHARACTER**: Inspect the anomaly and attempt to "Control" character parameters.
-4.  **FIX GLITCH**: Engage the emergency repair protocol to restore system integrity.
-5.  **RESTART**: Purge Ralph from the memory and perform a factory reset.
+The result is a fully interactive, cinematic arcade OS simulation.
 
 ---
 
-## ✨ Immersive Features & "Weird" Interactions
-- **Pixel-Shatter Buttons**: Interacting with system buttons causes them to physically break into pixel fragments.
-- **CRT Simulation**: High-fidelity scanlines, screen curvature (warp), and hardware vignettes.
-- **Dynamic Glitch Text**: Typography that jitters and flickers based on the current `corruptionLevel`.
-- **Sound System**: 8-bit arcade effects for coins, hammers, and system failures (Requires `.mp3` assets in `/public/sounds`).
+## ✅ Problem Statement Compliance
+
+This project implements the **Arcade Game Operating System – Wreck-It Ralph Theme** requirements:
+
+### Required Modules
+
+* ✔ Game Selection Screen
+* ✔ Character Control Panel
+* ✔ Glitch Repair System
+* ✔ Game Status Monitor
+
+### Required Flow
+
+Select Game → Select Character → Fix Glitch → Restart Game
+
+Implemented Flow:
+Boot → Game Select → Character → Repair → Play → Restart → Boot
+
+The system contains multiple interactive screens, complete navigation, and a full user loop.
 
 ---
 
-## 🤫 Easter Eggs (Top Secret)
+## 🧠 Core Architecture
 
-### 1. The Konami Code
-At any time, type the following on your physical keyboard:  
-`↑ ↑ ↓ ↓ ← → ← → B A`
-- **Success**: Unlocks **DEVELOPER MODE** (Rainbow UI + Reset).
-- **Failure**: Triggers a **"GOING TURBO"** event, crashing the OS.
+### 🔥 Global Corruption Engine
 
-### 2. Secret Input Module
-Can't find a keyboard? Look for the tiny **Terminal Icon** in the top-left corner. It opens a virtual gamepad so you can enter the Konami code via mouse or touch.
+* Centralized state (0–100%)
+* CSS-variable driven visual distortion (`--corruption-intensity`)
+* Controls glitch, shake, flicker, distortion intensity
+* Debounced and clamped for stability
+* Auto-recovery safeguards
 
-### 3. Bad-Anon Meeting
-The villains are meeting! **Click the scrolling title marquee 5 times** to crash the meeting and see Ralph, Bowser, Zangief, and the rest of the support group.
-
-### 4. Cupcake Jumpscare
-If you let the system reach **85% Corruption**, there is a 5% chance the "Critical Cake" anomaly will flash on your screen.
+Corruption is not decorative — it drives UI behavior and gameplay difficulty.
 
 ---
 
-## 💻 Tech Stack
-- **Framework**: Next.js 15 (App Router)
-- **UI Components**: Shadcn UI + Radix Primitives
-- **Styling**: Tailwind CSS + Custom Glitch Keyframes
-- **State**: React Context (`CorruptionProvider`)
-- **Icons**: Lucide React
+### 🕹️ Playable Game Module
+
+After successful repair, the selected ROM launches.
+
+Example (Fix-It Felix Mode):
+
+* Falling repair targets
+* Click-to-fix mechanic
+* 20-second survival timer
+* Stability meter interaction
+* Win/Lose logic
+* Corruption resurgence event
+
+The system is not only repaired — it becomes playable.
 
 ---
 
-## ⚠️ Warning
-If **Turbo** activity is detected, immediately proceed to `/repair`. Failure to maintain system integrity may result in the cabinet being labeled **"OUT OF ORDER"**.
+### 🛠 Glitch Repair System
 
-*© 1982-2024 Litwak’s Arcade. All Rights Reserved.*
+* Hammer-based mini-game
+* Countdown timer
+* Score tracking
+* Real-time corruption reduction
+* Difficulty scaling based on instability
+* Fail state increases corruption
+* Guaranteed resolution (no soft-lock)
+
+---
+
+### 📊 Game Status Monitor
+
+Explicitly labeled system HUD displaying:
+
+* Stability %
+* CPU Heat
+* Error Frequency
+* Operational Logs
+* Active ROM
+
+The monitor is persistent and reactive to system state.
+
+---
+
+### 🎮 Character Control Panel
+
+Interactive diagnostic suite allowing:
+
+* Sprite Stability toggling
+* Memory Shift simulation
+* ROM Emulation trigger
+* Direct anomaly control
+
+All toggles affect system state safely.
+
+---
+
+## 🎨 Immersion Features
+
+* CRT curvature simulation
+* Scanline overlay
+* Metallic arcade cabinet frame
+* Animated marquee header
+* Pixel-shatter buttons
+* World-specific color themes
+* Dynamic corruption distortion
+* “Going Turbo” spike event
+* Cupcake anomaly interaction
+* Bad-Anon hidden overlay
+* Konami Code Developer Mode
+* Virtual gamepad input
+
+---
+
+## 🔊 Sound System
+
+Integrated via HTML5 Audio API.
+
+Includes:
+
+* Boot sequence
+* Coin insert
+* Button clicks
+* Glitch distortion
+* Hammer repair
+* Alert be
