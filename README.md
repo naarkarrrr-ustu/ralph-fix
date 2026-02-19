@@ -22,18 +22,18 @@ To satisfy the competition requirements, the system follows this strict operatio
 ---
 
 ## 🔊 Audio Asset Setup (Required)
-The sound engine looks for files in the **`public/sounds/`** directory. You must add your own `.mp3` files to this folder using these exact names:
+The sound engine looks for files in the root-level **`public/sounds/`** directory. You must add your own `.mp3` files to this folder using these exact absolute paths:
 
-| Filename | Purpose |
+| Absolute File Path | Trigger Event |
 | :--- | :--- |
-| **`coin.mp3`** | Triggered on the initial credit insert at boot. |
-| **`boot.mp3`** | Triggered on system startup and reset completion. |
-| **`click.mp3`** | Standard button and menu navigation sound. |
-| **`glitch.mp3`** | Triggered during corruption events and secret console access. |
-| **`hammer.mp3`** | Triggered when repairing fragments or smashing glitches. |
-| **`alert.mp3`** | Triggered for system warnings and jumpscare events. |
-| **`death.mp3`** | Triggered on game over or sequence failure. |
-| **`shutdown.mp3`** | Triggered during the OS termination sequence. |
+| **`/public/sounds/coin.mp3`** | Initial credit insert at boot. |
+| **`/public/sounds/boot.mp3`** | System startup and reset completion. |
+| **`/public/sounds/click.mp3`** | Standard button and menu navigation. |
+| **`/public/sounds/glitch.mp3`** | Corruption events and secret console access. |
+| **`/public/sounds/hammer.mp3`** | Repairing fragments or smashing glitches. |
+| **`/public/sounds/alert.mp3`** | System warnings and jumpscare events. |
+| **`/public/sounds/death.mp3`** | Game over or sequence failure. |
+| **`/public/sounds/shutdown.mp3`** | OS termination sequence. |
 
 ---
 
