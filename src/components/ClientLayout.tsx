@@ -55,7 +55,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* 3. System HUD Container - Stabilized for Hydration at index 2 */}
-      <div id="arcade-system-hud">
+      {/* Using suppressHydrationWarning to handle minor attribute shifts from portals/extensions */}
+      <div id="arcade-system-hud" suppressHydrationWarning>
         {mounted && (
           <div className="relative z-[10001]">
             {/* Top Marquee Bar */}
