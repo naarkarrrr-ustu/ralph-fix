@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
@@ -63,16 +62,23 @@ export default function PlayPage() {
     gameLoopRef.current = setInterval(() => {
       setTargets(prev => {
         const next: ROMTarget[] = [];
+        let hitBottom = false;
+        
         prev.forEach(t => {
           const nextY = t.y + t.speed;
           if (nextY > 100) {
-            // Missed target
-            setStability(s => Math.max(0, s - 10));
-            playSound('glitch');
+            hitBottom = true;
           } else {
             next.push({ ...t, y: nextY });
           }
         });
+
+        // Trigger stability drop outside the map loop
+        if (hitBottom) {
+          setStability(s => Math.max(0, s - 10));
+          playSound('glitch');
+        }
+
         return next;
       });
     }, 50);
@@ -86,7 +92,7 @@ export default function PlayPage() {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          setGameState('win');
+          // Triggering win condition handled by watcher
           return 0;
         }
         return prev - 1;
@@ -100,22 +106,28 @@ export default function PlayPage() {
     };
   }, [gameState, spawnTarget, playSound]);
 
-  // Monitor Stability for Loss Condition
+  // Game State Watcher: Monitor Win/Loss Conditions
   useEffect(() => {
-    if (stability <= 0 && gameState === 'playing') {
+    if (gameState !== 'playing') return;
+
+    if (stability <= 0) {
       setGameState('loss');
       playSound('death');
+    } else if (timeLeft <= 0) {
+      setGameState('win');
     }
-  }, [stability, gameState, playSound]);
+  }, [stability, timeLeft, gameState, playSound]);
 
-  // Handle Win/Loss Transitions
+  // Transition Watcher
   useEffect(() => {
     if (gameState === 'win') {
       increaseCorruption(10);
-      setTimeout(() => router.push('/restart'), 3000);
+      const timeout = setTimeout(() => router.push('/restart'), 3000);
+      return () => clearTimeout(timeout);
     } else if (gameState === 'loss') {
       increaseCorruption(25);
-      setTimeout(() => router.push('/restart'), 3000);
+      const timeout = setTimeout(() => router.push('/restart'), 3000);
+      return () => clearTimeout(timeout);
     }
   }, [gameState, router, increaseCorruption]);
 

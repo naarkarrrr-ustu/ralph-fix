@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState, useCallback } from 'react';
@@ -69,7 +68,7 @@ export default function RepairPage() {
 
     const timerInterval = setInterval(() => {
       setTimeRemaining(prev => {
-        if (prev <= 0) {
+        if (prev <= 1) {
           playSound('death');
           increaseCorruption(15);
           return 35;
@@ -87,27 +86,31 @@ export default function RepairPage() {
   const handleFragmentClick = (frag: Fragment) => {
     playSound('hammer');
     
+    // UI Effects
     const newSpark = { id: Math.random(), top: frag.top, left: frag.left };
     setSparks(prev => [...prev, newSpark]);
     setTimeout(() => {
       setSparks(prev => prev.filter(s => s.id !== newSpark.id));
     }, 400);
 
+    // Update Fragments and Score
     setFragments(prev => prev.filter(f => f.id !== frag.id));
     setScore(prev => prev + (frag.type === 'glitch' ? 500 : 200));
     
-    setRepairProgress(prev => {
-      const next = prev + 20;
-      if (next >= 100) {
-        setRepairComplete(true);
-        setTimeout(() => router.push('/play'), 1200);
-        return 100;
-      }
-      return next;
-    });
+    // Calculate and update progress safely
+    const nextProgressValue = repairProgress + 20;
+    setRepairProgress(Math.min(100, nextProgressValue));
     
+    // Side Effects handled outside state updaters
+    if (nextProgressValue >= 100) {
+      setRepairComplete(true);
+      setTimeout(() => router.push('/play'), 1200);
+    }
+    
+    // Clean corruption
     setCorruptionLevel(Math.max(0, corruptionLevel - 5));
 
+    // Maintain fragment count
     if (fragments.length <= 1) {
       setTimeout(spawnFragments, 300);
     }
