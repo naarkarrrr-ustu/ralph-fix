@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -10,9 +9,14 @@ export function CorruptionOverlay() {
   const [showBurst, setShowBurst] = useState(false);
   const [burstStyle, setBurstStyle] = useState<React.CSSProperties>({});
   const [lineClass, setLineClass] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (corruptionLevel < 10) return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || corruptionLevel < 10) return;
 
     const interval = setInterval(() => {
       // Calculate randomness only on the client
@@ -33,9 +37,9 @@ export function CorruptionOverlay() {
     }, 2000 / (corruptionLevel / 10));
 
     return () => clearInterval(interval);
-  }, [corruptionLevel]);
+  }, [corruptionLevel, mounted]);
 
-  if (!showBurst) return null;
+  if (!mounted || !showBurst) return null;
 
   return (
     <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden flex flex-col items-center justify-center">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArcadePanel } from './ArcadePanel';
 import { GlitchText } from './GlitchText';
 import { 
@@ -12,13 +12,20 @@ import { useSoundEffect } from '@/hooks/use-sound-effect';
 
 export function VirtualGamepad() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { playSound } = useSoundEffect();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const pressKey = (key: string) => {
     playSound('click');
     // Ensure the event reaches the window-level Konami listener
     window.dispatchEvent(new CustomEvent('konami-key', { detail: { key } }));
   };
+
+  if (!mounted) return null;
 
   return (
     <>
