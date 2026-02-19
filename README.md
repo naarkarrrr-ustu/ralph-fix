@@ -1,47 +1,169 @@
-# 🕹️ ARCADE OS – System Corruption Mode
+🕹️ ARCADE OS – System Corruption Mode
+A Reactive Arcade Operating System Inspired by the Wreck-It Ralph Universe
+🎯 Overview
 
-### A Reactive Arcade Operating System Inspired by the Wreck-It Ralph Universe
+ARCADE OS simulates a networked arcade machine at Litwak’s Arcade that is actively being corrupted by Ralph.
 
----
+The system dynamically degrades through a centralized corruption engine and requires the user to:
 
-## 🎯 Overview
+Select a ROM
 
-**ARCADE OS** simulates a networked arcade machine at *Litwak’s Arcade* that is actively being corrupted by Ralph. The system dynamically degrades through a centralized corruption engine and requires the user to diagnose, repair, and play the game to restore stability.
+Diagnose the anomaly
 
----
+Repair system instability
 
-## 🔄 Official System Flow
-To satisfy the competition requirements, the system follows this strict operational loop:
-1.  **BOOT**: Insert a coin to power on the Litwak-3000 kernel.
-2.  **SELECT GAME**: Choose a ROM module to simulate.
-3.  **SELECT CHARACTER**: Inspect the anomaly and use the **Control Interface** to adjust character parameters.
-4.  **FIX GLITCH**: Engage the emergency repair protocol using the system hammer.
-5.  **PLAY ROM**: Successfully survive a session of the repaired game module.
-6.  **RESTART**: Purge the Ralph anomaly and perform a factory reset.
+Successfully launch and play the game
 
----
+Survive corruption resurgence
 
-## 🔊 Audio Asset Setup (REQUIRED ACTION)
-The sound engine looks for files in the **`public/sounds/`** directory. You must manually add your own `.mp3` files to this folder using these exact absolute paths:
+Perform a full system purge
 
-| Absolute File Path | Trigger Event |
-| :--- | :--- |
-| **`/public/sounds/coin.mp3`** | Initial credit insert at boot. |
-| **`/public/sounds/boot.mp3`** | System startup and reset completion. |
-| **`/public/sounds/click.mp3`** | Standard button and menu navigation. |
-| **`/public/sounds/glitch.mp3`** | Corruption events and secret console access. |
-| **`/public/sounds/hammer.mp3`** | Repairing fragments or smashing glitches. |
-| **`/public/sounds/alert.mp3`** | System warnings and jumpscare events. |
-| **`/public/sounds/death.mp3`** | Game over or sequence failure. |
-| **`/public/sounds/shutdown.mp3`** | OS termination sequence. |
+The result is a fully interactive, cinematic arcade OS simulation.
 
----
+✅ Problem Statement Compliance
 
-## 🧠 Core Architecture
-- **Global Corruption Engine**: Visual distortion (RGB split, shake, flicker) that scales with system instability.
-- **Game Status Monitor**: Persistent HUD tracking CPU temp, error frequency, and real-time logs.
-- **Character Control Panel**: Real-time diagnostic toggles (Sprite Stability, Memory Shift) for active characters.
-- **Konami Secret Module**: Input `↑ ↑ ↓ ↓ ← → ← → B A` via keyboard or virtual terminal to access Developer Mode.
-- **Critical Cake Interaction**: Smashing the high-corruption cake with the hammer reduces corruption level by 15%.
+This project implements the Arcade Game Operating System – Wreck-It Ralph Theme requirements:
 
-*© 1982-2024 Litwak’s Arcade. All Rights Reserved.*
+Required Modules
+
+✔ Game Selection Screen
+
+✔ Character Control Panel
+
+✔ Glitch Repair System
+
+✔ Game Status Monitor
+
+Required Flow
+
+Select Game → Select Character → Fix Glitch → Restart Game
+
+Implemented Flow:
+Boot → Game Select → Character → Repair → Play → Restart → Boot
+
+The system contains multiple interactive screens, complete navigation, and a full user loop.
+
+🧠 Core Architecture
+🔥 Global Corruption Engine
+
+Centralized state (0–100%)
+
+CSS-variable driven visual distortion (--corruption-intensity)
+
+Controls glitch, shake, flicker, distortion intensity
+
+Debounced and clamped for stability
+
+Auto-recovery safeguards
+
+Corruption is not decorative — it drives UI behavior and gameplay difficulty.
+
+🕹️ Playable Game Module
+
+After successful repair, the selected ROM launches.
+
+Example (Fix-It Felix Mode):
+
+Falling repair targets
+
+Click-to-fix mechanic
+
+20-second survival timer
+
+Stability meter interaction
+
+Win/Lose logic
+
+Corruption resurgence event
+
+The system is not only repaired — it becomes playable.
+
+🛠 Glitch Repair System
+
+Hammer-based mini-game
+
+Countdown timer
+
+Score tracking
+
+Real-time corruption reduction
+
+Difficulty scaling based on instability
+
+Fail state increases corruption
+
+Guaranteed resolution (no soft-lock)
+
+📊 Game Status Monitor
+
+Explicitly labeled system HUD displaying:
+
+Stability %
+
+CPU Heat
+
+Error Frequency
+
+Operational Logs
+
+Active ROM
+
+The monitor is persistent and reactive to system state.
+
+🎮 Character Control Panel
+
+Interactive diagnostic suite allowing:
+
+Sprite Stability toggling
+
+Memory Shift simulation
+
+ROM Emulation trigger
+
+Direct anomaly control
+
+All toggles affect system state safely.
+
+🎨 Immersion Features
+
+CRT curvature simulation
+
+Scanline overlay
+
+Metallic arcade cabinet frame
+
+Animated marquee header
+
+Pixel-shatter buttons
+
+World-specific color themes
+
+Dynamic corruption distortion
+
+“Going Turbo” spike event
+
+Cupcake anomaly interaction
+
+Bad-Anon hidden overlay
+
+Konami Code Developer Mode
+
+Virtual gamepad input
+
+🔊 Sound System
+
+Integrated via HTML5 Audio API.
+
+Includes:
+
+Boot sequence
+
+Coin insert
+
+Button clicks
+
+Glitch distortion
+
+Hammer repair
+
+Alert be
