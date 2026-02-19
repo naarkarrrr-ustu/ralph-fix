@@ -8,7 +8,9 @@ import { GlitchText } from '@/components/GlitchText';
 import { PixelBreakButton } from '@/components/PixelBreakButton';
 import { CorruptionOverlay } from '@/components/CorruptionOverlay';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { ShieldAlert, User, Cpu, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { ShieldAlert, User, Cpu, Zap, ChevronLeft, ChevronRight, Settings2, Sliders } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useSoundEffect } from '@/hooks/use-sound-effect';
 import Image from 'next/image';
@@ -69,10 +71,13 @@ export default function CharacterPage() {
     <div className="h-full flex p-8 gap-8 relative overflow-hidden">
       <CorruptionOverlay />
       
-      {/* Sidebar UI */}
+      {/* Sidebar UI - System Monitor */}
       <div className="w-64 flex flex-col gap-4 z-20">
         <div className="p-4 bg-card border border-primary/20 rounded arcade-glow">
-          <GlitchText text="SYSTEM MONITOR" className="text-xs font-bold mb-4 block" />
+          <div className="flex items-center gap-2 mb-4">
+             <Settings2 size={14} className="text-primary" />
+             <GlitchText text="SYSTEM MONITOR" className="text-xs font-bold block" />
+          </div>
           <div className="space-y-3">
             <StatItem icon={<Cpu size={14} />} label="CPU LOAD" value={`${40 + corruptionLevel}%`} glitch />
             <StatItem icon={<User size={14} />} label="PLAYER ID" value="P1_WRECKER" />
@@ -80,7 +85,21 @@ export default function CharacterPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto space-y-4">
+        {/* Character Specific Control Actions (Problem Statement Compliance) */}
+        <div className="p-4 bg-card border border-secondary/20 rounded arcade-glow-secondary">
+          <div className="flex items-center gap-2 mb-4">
+             <Sliders size={14} className="text-secondary" />
+             <span className="text-[10px] font-bold text-secondary uppercase tracking-widest">CHARACTER_CONTROLS</span>
+          </div>
+          <div className="space-y-4">
+            <ControlAction label="SPRITE_STABILITY" defaultChecked />
+            <ControlAction label="FORCE_GLITCH" onClick={() => increaseCorruption(10)} />
+            <ControlAction label="VOICE_LATENCY" />
+            <ControlAction label="EMULATE_ROM" />
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto space-y-4 pt-2">
           {warnings.map((msg, i) => (
             <Alert key={i} variant="destructive" className="bg-destructive/10 border-destructive/50 animate-in slide-in-from-left duration-300">
               <ShieldAlert className="h-4 w-4" />
@@ -139,8 +158,8 @@ export default function CharacterPage() {
         </div>
 
         <div className="mt-12 flex gap-4">
-          <PixelBreakButton variant="outline" className="px-8" onClick={() => { increaseCorruption(5); playSound('glitch'); }}>EMULATE</PixelBreakButton>
-          <PixelBreakButton className="px-12 bg-secondary border-secondary hover:bg-secondary/80" onClick={() => { playSound('click'); router.push('/repair'); }}>PATCH SYSTEM</PixelBreakButton>
+          <PixelBreakButton variant="outline" className="px-8" onClick={() => { increaseCorruption(5); playSound('glitch'); }}>EMULATE_ROM</PixelBreakButton>
+          <PixelBreakButton className="px-12 bg-secondary border-secondary hover:bg-secondary/80" onClick={() => { playSound('click'); router.push('/repair'); }}>REPAIR_SYSTEM</PixelBreakButton>
         </div>
       </div>
 
@@ -160,6 +179,20 @@ function StatItem({ icon, label, value, color = "text-primary", glitch = false }
         <span className="text-[10px]">{label}</span>
       </div>
       <span className={cn("text-[10px] font-bold font-mono", color, glitch ? "flicker" : "")}>{value}</span>
+    </div>
+  );
+}
+
+function ControlAction({ label, defaultChecked = false, onClick }: { label: string, defaultChecked?: boolean, onClick?: () => void }) {
+  const { playSound } = useSoundEffect();
+  return (
+    <div className="flex items-center justify-between">
+      <Label className="text-[9px] text-muted-foreground uppercase tracking-tighter">{label}</Label>
+      <Switch 
+        defaultChecked={defaultChecked} 
+        onCheckedChange={() => { playSound('click'); onClick?.(); }}
+        className="scale-75 data-[state=checked]:bg-secondary" 
+      />
     </div>
   );
 }

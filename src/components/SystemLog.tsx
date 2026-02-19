@@ -46,7 +46,7 @@ export function SystemLog() {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-black/90 border-t-2 border-primary/20 p-2 z-[10002] font-mono text-[9px] flex gap-4 overflow-hidden h-10 items-center uppercase tracking-tighter">
       <div className="flex-shrink-0 text-primary font-bold animate-pulse px-3 border-r border-primary/20">
-        LITWAK_OS_V1.98
+        GAME STATUS MONITOR
       </div>
       <div className="flex gap-8 animate-in slide-in-from-right duration-500 overflow-hidden">
         {logs.map((log, i) => (
