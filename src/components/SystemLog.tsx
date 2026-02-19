@@ -20,7 +20,11 @@ const MESSAGES = [
   "Q*bert language pack loading... !?@#*!",
   "Turbo signature detected. Sector 12.",
   "Bad-Anon session in progress. Do not disturb.",
-  "Rerouting glitch stream... Vanellope.anomaly"
+  "Rerouting glitch stream... Vanellope.anomaly",
+  "LITWAK'S POLICY: Do not feed the characters.",
+  "Cyber-glitch detected in Sugar Rush candy-kart.",
+  "System Stability: 'It's a feature, not a bug.'",
+  "Tapper's Root Beer spill detected in Kernel."
 ];
 
 export function SystemLog() {

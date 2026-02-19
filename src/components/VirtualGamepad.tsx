@@ -26,7 +26,7 @@ export function VirtualGamepad() {
       {/* Secret Trigger - Terminal icon in top-left */}
       <button 
         onClick={() => { setIsOpen(true); playSound('glitch'); }}
-        className="fixed top-1 left-1 z-[10005] w-6 h-6 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity"
+        className="fixed top-1 left-1 z-[10005] w-6 h-6 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity bg-primary/10 rounded"
         title="Open Secret Console"
       >
         <Terminal size={14} className="text-primary animate-pulse" />
