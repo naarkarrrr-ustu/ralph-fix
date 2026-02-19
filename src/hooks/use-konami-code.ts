@@ -31,7 +31,7 @@ export function useKonamiCode(onSuccess: () => void, onFailure?: () => void) {
     setInput(prev => {
       const nextInput = [...prev, normalizedKey].slice(-KONAMI_CODE.length);
       
-      // Only evaluate if we have a full sequence
+      // Only evaluate if we have a full sequence of 10 keys
       if (nextInput.length === KONAMI_CODE.length) {
         if (nextInput.join(',') === KONAMI_CODE.join(',')) {
           // MATCH!
@@ -41,7 +41,6 @@ export function useKonamiCode(onSuccess: () => void, onFailure?: () => void) {
           return []; // Reset sequence
         } else {
           // WRONG CODE! (If they just finished a 10-key attempt)
-          // We trigger failure only if they just hit the 10th key of an invalid sequence
           if (failureCallbackRef.current) {
             setTimeout(() => {
               failureCallbackRef.current?.();

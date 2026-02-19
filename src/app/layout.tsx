@@ -14,9 +14,6 @@ import { VirtualGamepad } from '@/components/VirtualGamepad';
 import { useSoundEffect } from '@/hooks/use-sound-effect';
 import { useRouter } from 'next/navigation';
 
-/**
- * LayoutContent handles the global state-dependent UI elements and keyboard listeners.
- */
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { setDevMode, resetCorruption, handleTitleClick, increaseCorruption } = useCorruption();
