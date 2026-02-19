@@ -21,8 +21,8 @@ To satisfy the competition requirements, the system follows this strict operatio
 
 ---
 
-## 🔊 Audio Asset Setup (Required)
-The sound engine looks for files in the root-level **`public/sounds/`** directory. You must add your own `.mp3` files to this folder using these exact absolute paths:
+## 🔊 Audio Asset Setup (REQUIRED ACTION)
+The sound engine looks for files in the **`public/sounds/`** directory. You must manually add your own `.mp3` files to this folder using these exact absolute paths:
 
 | Absolute File Path | Trigger Event |
 | :--- | :--- |
