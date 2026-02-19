@@ -1,0 +1,29 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "fix-it-felix",
+      "description": "Retro building repair game",
+      "imageUrl": "https://picsum.photos/seed/felix/400/300",
+      "imageHint": "retro arcade"
+    },
+    {
+      "id": "sugar-rush",
+      "description": "Candy themed racing game",
+      "imageUrl": "https://picsum.photos/seed/sugar/400/300",
+      "imageHint": "candy race"
+    },
+    {
+      "id": "hero-duty",
+      "description": "Sci-fi shooter game",
+      "imageUrl": "https://picsum.photos/seed/hero/400/300",
+      "imageHint": "sci-fi space"
+    },
+    {
+      "id": "ralph-char",
+      "description": "Large strong character",
+      "imageUrl": "https://picsum.photos/seed/ralph/300/400",
+      "imageHint": "strong giant"
+    }
+  ]
+}
