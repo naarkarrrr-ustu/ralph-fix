@@ -72,11 +72,13 @@ export default function CharacterPage() {
   };
 
   const handleRepairHover = () => {
-    if (repairHoverCount < 3) {
+    if (repairHoverCount < 5) {
+      // Increase the dodge distance with each attempt
+      const multiplier = (repairHoverCount + 1) * 1.5;
       setRepairHoverCount(prev => prev + 1);
       setButtonOffset({
-        x: (Math.random() - 0.5) * 300,
-        y: (Math.random() - 0.5) * 150
+        x: (Math.random() - 0.5) * 200 * multiplier,
+        y: (Math.random() - 0.5) * 100 * multiplier
       });
       playSound('glitch');
     }
@@ -176,9 +178,9 @@ export default function CharacterPage() {
           <PixelBreakButton variant="outline" className="px-8" onClick={() => { increaseCorruption(5); playSound('glitch'); }}>EMULATE_ROM</PixelBreakButton>
           
           <div 
-            className="transition-all duration-300"
+            className="transition-all duration-500 ease-out"
             style={{ 
-              transform: repairHoverCount < 3 
+              transform: repairHoverCount < 5 
                 ? `translate(${buttonOffset.x}px, ${buttonOffset.y}px)` 
                 : 'translate(0, 0)' 
             }}
@@ -186,17 +188,17 @@ export default function CharacterPage() {
             <PixelBreakButton 
               className={cn(
                 "px-12 bg-secondary border-secondary hover:bg-secondary/80",
-                repairHoverCount < 3 ? "animate-bounce" : ""
+                repairHoverCount < 5 ? "animate-bounce" : ""
               )} 
               onMouseEnter={handleRepairHover}
               onClick={() => { 
-                if (repairHoverCount >= 3) {
+                if (repairHoverCount >= 5) {
                   playSound('click'); 
                   router.push('/repair'); 
                 }
               }}
             >
-              {repairHoverCount < 3 ? "CATCH_ME_IF_YOU_CAN" : "REPAIR_SYSTEM"}
+              {repairHoverCount < 5 ? `GLITCH_COUNT: ${repairHoverCount}/5` : "REPAIR_SYSTEM"}
             </PixelBreakButton>
           </div>
         </div>
