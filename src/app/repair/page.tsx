@@ -58,10 +58,8 @@ export default function RepairPage() {
       setFragments(prev => prev.map(f => {
         let newTop = f.top + f.speedY;
         let newLeft = f.left + f.speedX;
-        
         if (newTop < 5 || newTop > 90) f.speedY *= -1;
         if (newLeft < 5 || newLeft > 95) f.speedX *= -1;
-
         return { ...f, top: newTop, left: newLeft };
       }));
     }, 50);
@@ -97,20 +95,18 @@ export default function RepairPage() {
     setFragments(prev => prev.filter(f => f.id !== frag.id));
     setScore(prev => prev + (frag.type === 'glitch' ? 500 : 200));
     
-    // Calculate and update progress safely
-    const nextProgressValue = repairProgress + 20;
-    setRepairProgress(Math.min(100, nextProgressValue));
+    // Calculate and update progress safely outside of direct render return
+    const nextProgressValue = Math.min(100, repairProgress + 20);
+    setRepairProgress(nextProgressValue);
     
-    // Side Effects handled outside state updaters
+    // Side effects handled in the event handler (safe from setState-while-rendering error)
     if (nextProgressValue >= 100) {
       setRepairComplete(true);
       setTimeout(() => router.push('/play'), 1200);
     }
     
-    // Clean corruption
     setCorruptionLevel(Math.max(0, corruptionLevel - 5));
 
-    // Maintain fragment count
     if (fragments.length <= 1) {
       setTimeout(spawnFragments, 300);
     }
@@ -184,6 +180,10 @@ export default function RepairPage() {
                  {frag.type === 'glitch' ? <Target className="text-secondary -rotate-45" /> : <Hammer className="text-primary -rotate-45" />}
               </div>
             </button>
+          ))}
+
+          {sparks.map(spark => (
+            <div key={spark.id} className="absolute z-50 pointer-events-none spark-burst bg-primary/40 rounded-full" style={{ top: `${spark.top}%`, left: `${spark.left}%`, width: '40px', height: '40px' }} />
           ))}
 
           {repairProgress >= 100 && (

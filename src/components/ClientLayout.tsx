@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -30,16 +29,13 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
-  // Initialize the Konami Code listener globally
   useKonamiCode(
     () => {
-      // SUCCESS - Developer Mode
       playSound('boot');
       setDevMode(true);
       resetCorruption();
     },
     () => {
-      // FAILURE - System Crash
       playSound('death');
       increaseCorruption(100);
       setTimeout(() => {
@@ -53,17 +49,17 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* 1. Global Arcade Frame - Static sibling at index 0 */}
       <div className="fixed inset-0 arcade-border pointer-events-none z-[10000]" />
       
-      {/* 2. Main App Container - Static sibling at index 1 */}
+      {/* 2. Main App Container - Always rendered for SSR consistency */}
       <main className="h-full w-full relative z-10 pb-10 pt-8 rounded-[40px] overflow-hidden">
         {children}
       </main>
 
       {/* 3. System HUD Container - Stabilized for Hydration */}
-      <div id="arcade-system-hud" className="relative z-[10001]">
+      <div id="arcade-system-hud">
         {mounted && (
-          <>
+          <div className="relative z-[10001]">
             {/* Top Marquee Bar */}
-            <div className="fixed top-0 left-0 w-full bg-black h-8 z-[10001] border-b border-primary/40 flex items-center overflow-hidden">
+            <div className="fixed top-0 left-0 w-full bg-black h-8 border-b border-primary/40 flex items-center overflow-hidden z-[10001]">
                <div 
                 onClick={handleTitleClick}
                 className="marquee text-[10px] font-bold text-primary tracking-[0.4em] uppercase cursor-pointer select-none"
@@ -85,7 +81,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             <div className="vignette" />
             
             <SystemLog />
-          </>
+          </div>
         )}
       </div>
     </div>

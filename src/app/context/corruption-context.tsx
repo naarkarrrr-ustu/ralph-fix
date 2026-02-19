@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
@@ -26,7 +25,6 @@ const CorruptionContext = createContext<CorruptionContextType | undefined>(undef
 
 export function CorruptionProvider({ children }: { children: ReactNode }) {
   const [corruptionLevel, setCorruptionLevel] = useState(0);
-  // Default to true so the first user interaction (Insert Coin) triggers audio correctly
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isDevMode, setDevMode] = useState(false);
   const [badAnonActive, setBadAnonActive] = useState(false);

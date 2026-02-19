@@ -58,7 +58,6 @@ export default function PlayPage() {
   useEffect(() => {
     if (gameState !== 'playing') return;
 
-    // Move targets
     gameLoopRef.current = setInterval(() => {
       setTargets(prev => {
         const next: ROMTarget[] = [];
@@ -73,7 +72,6 @@ export default function PlayPage() {
           }
         });
 
-        // Trigger stability drop outside the map loop
         if (hitBottom) {
           setStability(s => Math.max(0, s - 10));
           playSound('glitch');
@@ -83,18 +81,13 @@ export default function PlayPage() {
       });
     }, 50);
 
-    // Spawn targets
     spawnIntervalRef.current = setInterval(() => {
       spawnTarget();
     }, 1200);
 
-    // Countdown
     const timer = setInterval(() => {
       setTimeLeft(prev => {
-        if (prev <= 1) {
-          // Triggering win condition handled by watcher
-          return 0;
-        }
+        if (prev <= 1) return 0;
         return prev - 1;
       });
     }, 1000);
@@ -106,7 +99,7 @@ export default function PlayPage() {
     };
   }, [gameState, spawnTarget, playSound]);
 
-  // Game State Watcher: Monitor Win/Loss Conditions
+  // Watcher for Win/Loss state transitions
   useEffect(() => {
     if (gameState !== 'playing') return;
 
@@ -118,7 +111,7 @@ export default function PlayPage() {
     }
   }, [stability, timeLeft, gameState, playSound]);
 
-  // Transition Watcher
+  // Effect to handle navigation after game resolution
   useEffect(() => {
     if (gameState === 'win') {
       increaseCorruption(10);
@@ -141,7 +134,6 @@ export default function PlayPage() {
 
   return (
     <div className="h-full flex flex-col p-8 space-y-6 relative overflow-hidden bg-black">
-      {/* HUD Bar */}
       <div className="flex gap-4 z-20">
         <ArcadePanel className="flex-1" title="WORLD_STATUS">
           <div className="flex justify-between items-center">
@@ -167,7 +159,6 @@ export default function PlayPage() {
         </ArcadePanel>
       </div>
 
-      {/* Game Stage */}
       <div className="flex-1 relative border-4 border-primary/20 bg-primary/5 rounded overflow-hidden">
         {targets.map(target => (
           <button
@@ -187,23 +178,21 @@ export default function PlayPage() {
           </button>
         ))}
 
-        {/* Win/Loss Overlays */}
         {gameState === 'win' && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary/40 backdrop-blur-md animate-in zoom-in duration-500">
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary/40 backdrop-blur-md animate-in zoom-in duration-500 text-center p-8">
              <GlitchText text="ROM STABLE" className="text-7xl font-black text-white italic" />
              <p className="text-white font-mono mt-4 uppercase tracking-[0.5em]">System Recovery Initiated...</p>
           </div>
         )}
 
         {gameState === 'loss' && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-secondary/40 backdrop-blur-md animate-in zoom-in duration-500">
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-secondary/40 backdrop-blur-md animate-in zoom-in duration-500 text-center p-8">
              <GlitchText text="GAME CRASHED" className="text-7xl font-black text-white italic" />
              <p className="text-white font-mono mt-4 uppercase tracking-[0.3em]">Ralph Broke the Building.</p>
           </div>
         )}
       </div>
 
-      {/* Stability Bar Footer */}
       <div className="space-y-1">
         <div className="flex justify-between text-[10px] font-bold text-primary uppercase tracking-widest">
            <span>Core Integrity</span>
