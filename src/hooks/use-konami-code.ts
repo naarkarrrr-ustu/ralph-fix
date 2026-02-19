@@ -11,21 +11,28 @@ const KONAMI_CODE = [
   'b', 'a'
 ];
 
+/**
+ * Hook to listen for the Konami Code sequence globally.
+ * @param onSuccess Callback function when the sequence is correctly entered.
+ */
 export function useKonamiCode(onSuccess: () => void) {
   const [input, setInput] = useState<string[]>([]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Normalize all keys to lowercase for comparison
       const key = e.key.toLowerCase();
       
+      // Prevent scrolling when entering arrow keys for the code
+      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) {
+        e.preventDefault();
+      }
+
       const nextInput = [...input, key].slice(-KONAMI_CODE.length);
       setInput(nextInput);
 
-      // Compare normalized strings
       if (nextInput.join(',') === KONAMI_CODE.join(',')) {
         onSuccess();
-        setInput([]);
+        setInput([]); // Reset after success
       }
     };
 

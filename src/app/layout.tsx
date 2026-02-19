@@ -20,7 +20,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const { setDevMode, resetCorruption, handleTitleClick } = useCorruption();
   const { playSound } = useSoundEffect();
 
-  // Initialize the Konami Code listener
+  // Initialize the Konami Code listener globally
   useKonamiCode(() => {
     playSound('boot');
     setDevMode(true);
