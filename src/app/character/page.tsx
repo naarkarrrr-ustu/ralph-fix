@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -9,8 +8,9 @@ import { PixelBreakButton } from '@/components/PixelBreakButton';
 import { CorruptionOverlay } from '@/components/CorruptionOverlay';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ShieldAlert, User, Cpu, Zap } from 'lucide-react';
-import { PlaceHolderImages } from '../lib/placeholder-images';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 export default function CharacterPage() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function CharacterPage() {
       clearTimeout(timer);
       clearTimeout(timer2);
     };
-  }, []);
+  }, [increaseCorruption]);
 
   const removeWarning = (index: number) => {
     setWarnings(prev => prev.filter((_, i) => i !== index));

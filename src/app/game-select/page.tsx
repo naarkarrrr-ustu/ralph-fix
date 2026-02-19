@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect } from 'react';
@@ -7,8 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { GlitchText } from '@/components/GlitchText';
 import { PixelBreakButton } from '@/components/PixelBreakButton';
 import { useCorruption } from '../context/corruption-context';
-import { PlaceHolderImages } from '../lib/placeholder-images';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 export default function GameSelectPage() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function GameSelectPage() {
 
   useEffect(() => {
     increaseCorruption(10);
-  }, []);
+  }, [increaseCorruption]);
 
   const games = [
     { id: 'felix', name: 'FIX-IT FELIX JR.', color: 'text-primary', img: PlaceHolderImages.find(i => i.id === 'fix-it-felix') },
@@ -80,5 +80,3 @@ export default function GameSelectPage() {
     </div>
   );
 }
-
-import { cn } from '@/lib/utils';
