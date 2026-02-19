@@ -4,10 +4,10 @@
 import { useEffect, useState } from 'react';
 
 const KONAMI_CODE = [
-  'ArrowUp', 'ArrowUp', 
-  'ArrowDown', 'ArrowDown', 
-  'ArrowLeft', 'ArrowRight', 
-  'ArrowLeft', 'ArrowRight', 
+  'arrowup', 'arrowup', 
+  'arrowdown', 'arrowdown', 
+  'arrowleft', 'arrowright', 
+  'arrowleft', 'arrowright', 
   'b', 'a'
 ];
 
@@ -16,11 +16,14 @@ export function useKonamiCode(onSuccess: () => void) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const key = e.key.toLowerCase() === 'b' || e.key.toLowerCase() === 'a' ? e.key.toLowerCase() : e.key;
+      // Normalize all keys to lowercase for comparison
+      const key = e.key.toLowerCase();
+      
       const nextInput = [...input, key].slice(-KONAMI_CODE.length);
       setInput(nextInput);
 
-      if (nextInput.join(',') === KONAMI_CODE.join(',').toLowerCase()) {
+      // Compare normalized strings
+      if (nextInput.join(',') === KONAMI_CODE.join(',')) {
         onSuccess();
         setInput([]);
       }
