@@ -4,43 +4,43 @@
     {
       "id": "fix-it-felix",
       "description": "Retro building repair game",
-      "imageUrl": "https://picsum.photos/seed/felix/400/300",
+      "imageUrl": "https://i.postimg.cc/Nf7Wm8Xk/fixitfelixjr.jpg",
       "imageHint": "retro arcade"
     },
     {
       "id": "sugar-rush",
       "description": "Candy themed racing game",
-      "imageUrl": "https://picsum.photos/seed/sugar/400/300",
+      "imageUrl": "https://i.postimg.cc/MKbhV0Bb/sugarrush.jpg",
       "imageHint": "candy race"
     },
     {
       "id": "hero-duty",
       "description": "Sci-fi shooter game",
-      "imageUrl": "https://picsum.photos/seed/hero/400/300",
+      "imageUrl": "https://i.postimg.cc/fTj6m7dX/herosduty.jpg",
       "imageHint": "sci-fi space"
     },
     {
       "id": "ralph-char",
       "description": "Wreck-It Ralph",
-      "imageUrl": "https://picsum.photos/seed/ralph/300/400",
+      "imageUrl": "https://i.postimg.cc/8PV27X7H/ralph.webp",
       "imageHint": "strong giant"
     },
     {
       "id": "felix-char",
       "description": "Fix-It Felix",
-      "imageUrl": "https://picsum.photos/seed/felix-char/300/400",
+      "imageUrl": "https://i.postimg.cc/CLV3RrRJ/felix.webp",
       "imageHint": "happy repairman"
     },
     {
       "id": "vanellope-char",
       "description": "Vanellope von Schweetz",
-      "imageUrl": "https://picsum.photos/seed/vanellope/300/400",
+      "imageUrl": "https://i.postimg.cc/MK8Cn3nm/venellope.webp",
       "imageHint": "pixel girl"
     },
     {
       "id": "calhoun-char",
       "description": "Sergeant Calhoun",
-      "imageUrl": "https://picsum.photos/seed/calhoun/300/400",
+      "imageUrl": "https://i.postimg.cc/L6BrLkPP/sgt.jpg",
       "imageHint": "sci-fi soldier"
     }
   ]
