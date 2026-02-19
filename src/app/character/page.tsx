@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -7,41 +8,61 @@ import { GlitchText } from '@/components/GlitchText';
 import { PixelBreakButton } from '@/components/PixelBreakButton';
 import { CorruptionOverlay } from '@/components/CorruptionOverlay';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { ShieldAlert, User, Cpu, Zap } from 'lucide-react';
+import { ShieldAlert, User, Cpu, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useSoundEffect } from '@/hooks/use-sound-effect';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 export default function CharacterPage() {
   const router = useRouter();
   const { increaseCorruption, corruptionLevel } = useCorruption();
+  const { playSound } = useSoundEffect();
   const [warnings, setWarnings] = useState<string[]>([]);
-  const charImg = PlaceHolderImages.find(i => i.id === 'ralph-char');
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+
+  const characters = [
+    { id: 'ralph-char', name: 'WRECK-IT RALPH', type: 'DESTRUCTION_ENGINE', hint: 'ralph smash' },
+    { id: 'felix-char', name: 'FIX-IT FELIX JR.', type: 'REPAIR_SYSTEM', hint: 'felix hammer' },
+    { id: 'vanellope-char', name: 'VANELLOPE', type: 'GLITCH_ANOMALY', hint: 'candy racer' },
+    { id: 'calhoun-char', name: 'SGT. CALHOUN', type: 'DEFENSE_PROTOCOL', hint: 'hero duty' },
+  ];
+
+  const currentChar = characters[currentCharIndex];
+  const charImg = PlaceHolderImages.find(i => i.id === currentChar.id);
 
   useEffect(() => {
-    increaseCorruption(25);
+    increaseCorruption(15);
     
     const triggerWarning = () => {
+      playSound('alert');
       const messages = [
         "Unauthorized character size detected.",
         "Internal memory shift: Ralph.obj is expanding.",
         "Graphic pipeline overflow in sector 7.",
-        "Input delay increasing. Please restart controller."
+        "Input delay increasing. Character anomaly suspected."
       ];
       setWarnings(prev => [...prev, messages[Math.floor(Math.random() * messages.length)]]);
     };
 
     const timer = setTimeout(triggerWarning, 3000);
-    const timer2 = setTimeout(triggerWarning, 7000);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(timer2);
-    };
-  }, [increaseCorruption]);
+    return () => clearTimeout(timer);
+  }, [increaseCorruption, playSound]);
 
   const removeWarning = (index: number) => {
     setWarnings(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const nextChar = () => {
+    playSound('click');
+    setCurrentCharIndex((prev) => (prev + 1) % characters.length);
+    increaseCorruption(5);
+  };
+
+  const prevChar = () => {
+    playSound('click');
+    setCurrentCharIndex((prev) => (prev - 1 + characters.length) % characters.length);
+    increaseCorruption(5);
   };
 
   return (
@@ -50,12 +71,12 @@ export default function CharacterPage() {
       
       {/* Sidebar UI */}
       <div className="w-64 flex flex-col gap-4 z-20">
-        <div className="p-4 bg-card border border-primary/20 rounded">
+        <div className="p-4 bg-card border border-primary/20 rounded arcade-glow">
           <GlitchText text="SYSTEM MONITOR" className="text-xs font-bold mb-4 block" />
           <div className="space-y-3">
-            <StatItem icon={<Cpu size={14} />} label="CPU LOAD" value="89%" glitch />
+            <StatItem icon={<Cpu size={14} />} label="CPU LOAD" value={`${40 + corruptionLevel}%`} glitch />
             <StatItem icon={<User size={14} />} label="PLAYER ID" value="P1_WRECKER" />
-            <StatItem icon={<Zap size={14} />} label="VOLTAGE" value="OVERLOAD" color="text-secondary" />
+            <StatItem icon={<Zap size={14} />} label="STABILITY" value={corruptionLevel > 70 ? "CRITICAL" : "STABLE"} color={corruptionLevel > 70 ? "text-secondary" : "text-primary"} />
           </div>
         </div>
 
@@ -63,10 +84,10 @@ export default function CharacterPage() {
           {warnings.map((msg, i) => (
             <Alert key={i} variant="destructive" className="bg-destructive/10 border-destructive/50 animate-in slide-in-from-left duration-300">
               <ShieldAlert className="h-4 w-4" />
-              <AlertTitle>SYSTEM FAULT</AlertTitle>
-              <AlertDescription className="text-[10px]">
+              <AlertTitle className="text-[10px] font-bold">SYSTEM FAULT</AlertTitle>
+              <AlertDescription className="text-[8px] leading-tight">
                 {msg}
-                <button onClick={() => removeWarning(i)} className="block mt-1 underline hover:text-white">DISMISS</button>
+                <button onClick={() => removeWarning(i)} className="block mt-2 underline hover:text-white uppercase">DISMISS</button>
               </AlertDescription>
             </Alert>
           ))}
@@ -78,36 +99,53 @@ export default function CharacterPage() {
         <div className="absolute top-0 left-0 p-4 border-l-2 border-t-2 border-primary/30 w-12 h-12" />
         <div className="absolute bottom-0 right-0 p-4 border-r-2 border-b-2 border-primary/30 w-12 h-12" />
         
-        <div className="relative w-80 h-96 group">
-          <div className="absolute inset-0 border-2 border-secondary animate-pulse scale-105 opacity-20" />
-          {charImg && (
-            <div className="relative w-full h-full overflow-hidden border-2 border-primary/40 bg-card">
+        {/* Carousel Nav */}
+        <button onClick={prevChar} className="absolute left-8 z-30 p-4 bg-black/40 border border-primary/20 hover:bg-primary/20 transition-all active:scale-90">
+          <ChevronLeft size={32} />
+        </button>
+        <button onClick={nextChar} className="absolute right-8 z-30 p-4 bg-black/40 border border-primary/20 hover:bg-primary/20 transition-all active:scale-90">
+          <ChevronRight size={32} />
+        </button>
+
+        <div className="relative w-80 h-96 group sprite-idle">
+          <div className={cn(
+            "absolute inset-0 border-2 transition-all scale-105 opacity-20",
+            currentChar.id.includes('ralph') ? "border-secondary" : "border-primary",
+            corruptionLevel > 60 ? "animate-ping" : "animate-pulse"
+          )} />
+          
+          <div className="relative w-full h-full overflow-hidden border-2 border-primary/40 bg-card arcade-glow">
+            {charImg && (
                <Image 
                 src={charImg.imageUrl} 
-                alt="Ralph" 
+                alt={currentChar.name} 
                 fill 
-                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
+                className={cn(
+                  "object-cover transition-all duration-700",
+                  corruptionLevel > 50 ? "grayscale opacity-60 scale-110" : "opacity-80 scale-100",
+                  currentChar.id === 'vanellope-char' ? "animate-pulse" : ""
+                )}
                 data-ai-hint={charImg.imageHint}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4">
-                 <GlitchText text="WRECK-IT RALPH" className="text-2xl font-black text-white" />
-                 <p className="text-primary text-[10px] tracking-widest font-bold">TYPE: DESTRUCTION_ENGINE</p>
-              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+            <div className="absolute bottom-4 left-4">
+               <GlitchText text={currentChar.name} className="text-2xl font-black text-white" />
+               <p className="text-primary text-[10px] tracking-widest font-bold">TYPE: {currentChar.type}</p>
             </div>
-          )}
+          </div>
           
           <div className="absolute -right-4 -top-4 w-24 h-24 border-r-2 border-t-2 border-secondary/50 pointer-events-none group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
         </div>
 
         <div className="mt-12 flex gap-4">
-          <PixelBreakButton variant="outline" className="px-8" onClick={() => increaseCorruption(5)}>PUNCH</PixelBreakButton>
-          <PixelBreakButton className="px-12 bg-secondary border-secondary hover:bg-secondary/80" onClick={() => router.push('/repair')}>START GAME</PixelBreakButton>
+          <PixelBreakButton variant="outline" className="px-8" onClick={() => { increaseCorruption(5); playSound('glitch'); }}>EMULATE</PixelBreakButton>
+          <PixelBreakButton className="px-12 bg-secondary border-secondary hover:bg-secondary/80" onClick={() => { playSound('click'); router.push('/repair'); }}>PATCH SYSTEM</PixelBreakButton>
         </div>
       </div>
 
       <div className="absolute bottom-4 right-8 text-right pointer-events-none">
-        <p className="text-[10px] text-primary/40">FRAGMENTS DETECTED: 4,901</p>
+        <p className="text-[10px] text-primary/40">FRAGMENTS DETECTED: {4900 + corruptionLevel}</p>
         <p className="text-[10px] text-secondary/40">SYSTEM STABILITY: {100 - corruptionLevel}%</p>
       </div>
     </div>

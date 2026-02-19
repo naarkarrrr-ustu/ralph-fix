@@ -1,21 +1,30 @@
+
 "use client";
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Progress } from '@/components/ui/progress';
 import { useCorruption } from '../context/corruption-context';
 import { GlitchText } from '@/components/GlitchText';
 import { ArcadePanel } from '@/components/ArcadePanel';
+import { Progress } from '@/components/ui/progress';
+import { useSoundEffect } from '@/hooks/use-sound-effect';
 import { cn } from '@/lib/utils';
 
 export default function BootPage() {
   const [progress, setProgress] = useState(0);
   const [bootLog, setBootLog] = useState<string[]>([]);
+  const [waitingForCoin, setWaitingForCoin] = useState(true);
   const router = useRouter();
   const { resetCorruption } = useCorruption();
+  const { playSound } = useSoundEffect();
 
   useEffect(() => {
     resetCorruption();
+  }, [resetCorruption]);
+
+  const handleInsertCoin = () => {
+    setWaitingForCoin(false);
+    playSound('boot');
     
     const logs = [
       "Initializing Arcade Kernel...",
@@ -24,7 +33,8 @@ export default function BootPage() {
       "Sugar Rush sector: OK",
       "Hero's Duty sector: OK",
       "Checking Ralph Integrity... FAILED",
-      "Ignoring Failure... READY"
+      "Character Ralph.obj out of bounds.",
+      "Attempting bypass... READY"
     ];
 
     let logIndex = 0;
@@ -40,12 +50,10 @@ export default function BootPage() {
           setBootLog(prev => [...prev, logs[logIndex++]]);
         }
 
-        return prev + Math.random() * 12;
+        return prev + Math.random() * 8;
       });
-    }, 200);
-
-    return () => clearInterval(interval);
-  }, [router, resetCorruption]);
+    }, 150);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-full space-y-12 bg-background p-6">
@@ -58,21 +66,37 @@ export default function BootPage() {
             <Badge text="V1.98.2" color="bg-secondary" />
           </div>
         </div>
-        <GlitchText text="READY TO PLAY" className="text-muted-foreground font-mono text-sm tracking-[0.5em] block" />
+        <GlitchText text="LITWAK'S SYSTEM" className="text-muted-foreground font-mono text-sm tracking-[0.5em] block" />
       </div>
 
       <div className="w-full max-w-lg space-y-6">
-        <ArcadePanel title="BOOT_LOADER" className="bg-black/40">
-           <div className="space-y-4">
-            <Progress value={progress} className="h-2 rounded-none bg-muted border border-primary/20" />
-            <div className="h-24 overflow-hidden font-mono text-[10px] text-primary/60 space-y-1">
-              {bootLog.map((log, i) => (
-                <p key={i} className="animate-in slide-in-from-left duration-300">{">"} {log}</p>
-              ))}
-              <p className="animate-pulse">{">"} _</p>
+        {waitingForCoin ? (
+          <div 
+            onClick={handleInsertCoin}
+            className="group cursor-pointer flex flex-col items-center space-y-8 animate-pulse"
+          >
+            <div className="w-24 h-24 border-4 border-primary rounded-full flex items-center justify-center text-primary font-black text-3xl group-hover:scale-110 transition-transform arcade-glow">
+              $
             </div>
-           </div>
-        </ArcadePanel>
+            <GlitchText 
+              text="INSERT COIN TO START" 
+              className="text-xl font-black text-primary italic tracking-widest"
+              intensity="low"
+            />
+          </div>
+        ) : (
+          <ArcadePanel title="BOOT_LOADER" className="bg-black/40">
+             <div className="space-y-4">
+              <Progress value={progress} className="h-2 rounded-none bg-muted border border-primary/20" />
+              <div className="h-32 overflow-hidden font-mono text-[10px] text-primary/60 space-y-1">
+                {bootLog.map((log, i) => (
+                  <p key={i} className="animate-in slide-in-from-left duration-300">{">"} {log}</p>
+                ))}
+                <p className="animate-pulse">{">"} _</p>
+              </div>
+             </div>
+          </ArcadePanel>
+        )}
       </div>
 
       <div className="absolute bottom-16 flex gap-12 text-[10px] font-mono text-muted-foreground/30">

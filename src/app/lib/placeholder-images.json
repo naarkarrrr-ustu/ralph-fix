@@ -21,9 +21,27 @@
     },
     {
       "id": "ralph-char",
-      "description": "Large strong character",
+      "description": "Wreck-It Ralph",
       "imageUrl": "https://picsum.photos/seed/ralph/300/400",
       "imageHint": "strong giant"
+    },
+    {
+      "id": "felix-char",
+      "description": "Fix-It Felix",
+      "imageUrl": "https://picsum.photos/seed/felix-char/300/400",
+      "imageHint": "happy repairman"
+    },
+    {
+      "id": "vanellope-char",
+      "description": "Vanellope von Schweetz",
+      "imageUrl": "https://picsum.photos/seed/vanellope/300/400",
+      "imageHint": "pixel girl"
+    },
+    {
+      "id": "calhoun-char",
+      "description": "Sergeant Calhoun",
+      "imageUrl": "https://picsum.photos/seed/calhoun/300/400",
+      "imageHint": "sci-fi soldier"
     }
   ]
 }
