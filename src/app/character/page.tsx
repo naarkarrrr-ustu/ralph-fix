@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -74,7 +73,7 @@ export default function CharacterPage() {
   const handleRepairHover = () => {
     if (repairHoverCount < 5) {
       // Increase the dodge distance with each attempt
-      const multiplier = (repairHoverCount + 1) * 1.5;
+      const multiplier = Math.pow(repairHoverCount + 1, 1.5);
       setRepairHoverCount(prev => prev + 1);
       setButtonOffset({
         x: (Math.random() - 0.5) * 200 * multiplier,
@@ -82,6 +81,20 @@ export default function CharacterPage() {
       });
       playSound('glitch');
     }
+  };
+
+  const handleClickMe = () => {
+    increaseCorruption(8);
+    playSound('glitch');
+    const ralphJokes = [
+      "Ralph: 'Hey! Stop clicking me! I'm not a mouse-pad!'",
+      "Ralph: 'You click like a Cy-bug on sugar!'",
+      "Ralph: 'If you click one more time, I'm wrecking your cursor!'",
+      "Ralph: 'Is this a game to you? Oh wait... it is.'",
+      "Ralph: 'One more click and I'm smashing the motherboard!'",
+      "Ralph: 'My fists are bigger than your mouse, watch out!'"
+    ];
+    setWarnings(prev => [ralphJokes[Math.floor(Math.random() * ralphJokes.length)], ...prev]);
   };
 
   return (
@@ -175,7 +188,7 @@ export default function CharacterPage() {
         </div>
 
         <div className="mt-12 flex gap-4 relative">
-          <PixelBreakButton variant="outline" className="px-8" onClick={() => { increaseCorruption(5); playSound('glitch'); }}>EMULATE_ROM</PixelBreakButton>
+          <PixelBreakButton variant="outline" className="px-8" onClick={handleClickMe}>CLICK ME...</PixelBreakButton>
           
           <div 
             className="transition-all duration-500 ease-out"
