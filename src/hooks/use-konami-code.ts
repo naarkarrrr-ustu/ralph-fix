@@ -13,17 +13,17 @@ const KONAMI_CODE = [
 
 /**
  * Hook to listen for the Konami Code sequence globally.
- * Fixed to avoid state updates during render by moving side effects 
- * out of the functional state update.
+ * Now includes an onFailure callback for incorrect attempts.
  */
-export function useKonamiCode(onSuccess: () => void) {
+export function useKonamiCode(onSuccess: () => void, onFailure?: () => void) {
   const [input, setInput] = useState<string[]>([]);
-  // Use a ref to store the latest onSuccess to avoid re-binding listeners too often
-  const callbackRef = useRef(onSuccess);
+  const successCallbackRef = useRef(onSuccess);
+  const failureCallbackRef = useRef(onFailure);
   
   useEffect(() => {
-    callbackRef.current = onSuccess;
-  }, [onSuccess]);
+    successCallbackRef.current = onSuccess;
+    failureCallbackRef.current = onFailure;
+  }, [onSuccess, onFailure]);
 
   const processKey = useCallback((key: string) => {
     const normalizedKey = key.toLowerCase();
@@ -31,14 +31,24 @@ export function useKonamiCode(onSuccess: () => void) {
     setInput(prev => {
       const nextInput = [...prev, normalizedKey].slice(-KONAMI_CODE.length);
       
-      // Check if code is matched
-      if (nextInput.join(',') === KONAMI_CODE.join(',')) {
-        // We schedule the callback to run after the state update to avoid
-        // "update while rendering" warnings.
-        setTimeout(() => {
-          callbackRef.current();
-        }, 0);
-        return []; // Reset sequence
+      // Only evaluate if we have a full sequence
+      if (nextInput.length === KONAMI_CODE.length) {
+        if (nextInput.join(',') === KONAMI_CODE.join(',')) {
+          // MATCH!
+          setTimeout(() => {
+            successCallbackRef.current();
+          }, 0);
+          return []; // Reset sequence
+        } else {
+          // WRONG CODE! (If they just finished a 10-key attempt)
+          // We trigger failure only if they just hit the 10th key of an invalid sequence
+          if (failureCallbackRef.current) {
+            setTimeout(() => {
+              failureCallbackRef.current?.();
+            }, 0);
+          }
+          return []; // Reset sequence
+        }
       }
       
       return nextInput;
@@ -48,8 +58,6 @@ export function useKonamiCode(onSuccess: () => void) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
-      
-      // Track valid keys
       const validKeys = ['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'a', 'b'];
       if (validKeys.includes(key)) {
         processKey(key);

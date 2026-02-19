@@ -12,21 +12,33 @@ import { BadAnonOverlay } from '@/components/BadAnonOverlay';
 import { CupcakeJumpscare } from '@/components/CupcakeJumpscare';
 import { VirtualGamepad } from '@/components/VirtualGamepad';
 import { useSoundEffect } from '@/hooks/use-sound-effect';
+import { useRouter } from 'next/navigation';
 
 /**
  * LayoutContent handles the global state-dependent UI elements and keyboard listeners.
- * It is wrapped by CorruptionProvider in the root export.
  */
 function LayoutContent({ children }: { children: React.ReactNode }) {
-  const { setDevMode, resetCorruption, handleTitleClick } = useCorruption();
+  const router = useRouter();
+  const { setDevMode, resetCorruption, handleTitleClick, increaseCorruption } = useCorruption();
   const { playSound } = useSoundEffect();
 
   // Initialize the Konami Code listener globally
-  useKonamiCode(() => {
-    playSound('boot');
-    setDevMode(true);
-    resetCorruption();
-  });
+  useKonamiCode(
+    () => {
+      // SUCCESS
+      playSound('boot');
+      setDevMode(true);
+      resetCorruption();
+    },
+    () => {
+      // FAILURE - Glitch out and reboot
+      playSound('death');
+      increaseCorruption(100);
+      setTimeout(() => {
+        router.push('/restart');
+      }, 1500);
+    }
+  );
 
   return (
     <body className="font-body antialiased bg-background text-foreground overflow-hidden h-screen w-screen relative p-4">

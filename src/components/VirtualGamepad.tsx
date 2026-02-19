@@ -17,25 +17,16 @@ export function VirtualGamepad() {
 
   const pressKey = (key: string) => {
     playSound('click');
-    // Dispatch custom event that the hook listens for
+    // Ensure the event reaches the window-level Konami listener
     window.dispatchEvent(new CustomEvent('konami-key', { detail: { key } }));
   };
 
-  const controls = [
-    { key: 'arrowup', icon: <ArrowUp />, label: 'UP' },
-    { key: 'arrowdown', icon: <ArrowDown />, label: 'DOWN' },
-    { key: 'arrowleft', icon: <ArrowLeft />, label: 'LEFT' },
-    { key: 'arrowright', icon: <ArrowRight />, label: 'RIGHT' },
-    { key: 'b', icon: <span className="font-black">B</span>, label: 'B' },
-    { key: 'a', icon: <span className="font-black">A</span>, label: 'A' },
-  ];
-
   return (
     <>
-      {/* Secret Trigger - A small glitchy pixel in the corner */}
+      {/* Secret Trigger - Terminal icon in top-left */}
       <button 
         onClick={() => { setIsOpen(true); playSound('glitch'); }}
-        className="fixed top-1 left-1 z-[10005] w-6 h-6 flex items-center justify-center opacity-20 hover:opacity-100 transition-opacity"
+        className="fixed top-1 left-1 z-[10005] w-6 h-6 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity"
         title="Open Secret Console"
       >
         <Terminal size={14} className="text-primary animate-pulse" />
@@ -54,7 +45,7 @@ export function VirtualGamepad() {
             <div className="space-y-6 text-center">
               <div className="space-y-1">
                 <GlitchText text="VIRTUAL GAMEPAD" className="text-xl font-black italic" />
-                <p className="text-[8px] text-muted-foreground uppercase tracking-widest">Enter the legendary sequence</p>
+                <p className="text-[8px] text-muted-foreground uppercase tracking-widest">Enter the sequence correctly... or else.</p>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
@@ -74,7 +65,7 @@ export function VirtualGamepad() {
               </div>
 
               <p className="text-[8px] font-mono text-primary/40 pt-4 uppercase tracking-tighter">
-                Sequence: ↑ ↑ ↓ ↓ ← → ← → B A
+                Sequence required: ↑ ↑ ↓ ↓ ← → ← → B A
               </p>
             </div>
           </ArcadePanel>

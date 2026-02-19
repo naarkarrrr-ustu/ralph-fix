@@ -35,24 +35,25 @@ export default function RepairPage() {
   const [repairProgress, setRepairProgress] = useState(0);
   const [fragments, setFragments] = useState<Fragment[]>([]);
   const [sparks, setSparks] = useState<Spark[]>([]);
-  const [timeRemaining, setTimeRemaining] = useState(20);
+  const [timeRemaining, setTimeRemaining] = useState(35);
   const [score, setScore] = useState(0);
 
   const spawnFragments = useCallback(() => {
-    const newFrags = Array.from({ length: 10 }).map((_, i) => ({
+    // Easier: only 6 fragments at a time instead of 10
+    const newFrags = Array.from({ length: 6 }).map((_, i) => ({
       id: Math.random(),
       top: Math.random() * 70 + 15,
       left: Math.random() * 70 + 15,
-      size: Math.random() * 40 + 30,
-      speedX: (Math.random() - 0.5) * (2 + (corruptionLevel / 40)),
-      speedY: (Math.random() - 0.5) * (2 + (corruptionLevel / 40)),
+      size: Math.random() * 40 + 35, // Slightly larger targets
+      speedX: (Math.random() - 0.5) * (1 + (corruptionLevel / 80)), // Slower movement
+      speedY: (Math.random() - 0.5) * (1 + (corruptionLevel / 80)),
       type: Math.random() > 0.8 ? 'glitch' : 'code',
     } as Fragment));
     setFragments(newFrags);
   }, [corruptionLevel]);
 
   useEffect(() => {
-    increaseCorruption(20);
+    increaseCorruption(15);
     spawnFragments();
     
     const moveInterval = setInterval(() => {
@@ -71,8 +72,8 @@ export default function RepairPage() {
       setTimeRemaining(prev => {
         if (prev <= 0) {
           playSound('death');
-          increaseCorruption(25);
-          return 20;
+          increaseCorruption(30);
+          return 35; // Reset timer on death
         }
         return prev - 1;
       });
@@ -97,7 +98,8 @@ export default function RepairPage() {
     setScore(prev => prev + (frag.type === 'glitch' ? 500 : 200));
     
     setRepairProgress(prev => {
-      const next = prev + 10;
+      // Easier: 20% progress per click instead of 10%
+      const next = prev + 20;
       if (next >= 100) {
         setTimeout(() => router.push('/restart'), 1200);
         return 100;
@@ -105,7 +107,7 @@ export default function RepairPage() {
       return next;
     });
     
-    setCorruptionLevel(Math.max(0, corruptionLevel - 3));
+    setCorruptionLevel(Math.max(0, corruptionLevel - 5));
 
     if (fragments.length <= 1) {
       setTimeout(spawnFragments, 300);
@@ -139,7 +141,7 @@ export default function RepairPage() {
                 <p className="text-[8px] font-bold text-primary/60 uppercase">TIME_TO_CRASH</p>
                 <p className={cn(
                   "text-3xl font-black font-mono",
-                  timeRemaining < 5 ? "text-destructive animate-pulse" : "text-primary"
+                  timeRemaining < 10 ? "text-destructive animate-pulse" : "text-primary"
                 )}>
                   00:{timeRemaining.toString().padStart(2, '0')}
                 </p>
