@@ -1,16 +1,14 @@
 # 🕹️ ARCADE OS – System Corruption Mode
 
-**Property of Litwak’s Arcade**  
-*“I’m gonna wreck it!” — Ralph*
-
-Welcome to **ARCADE OS**, a cinematic, fully immersive Next.js 15 simulation of a retro arcade machine operating system that is actively falling apart due to a character-based anomaly (RALPH.OBJ).
+### A Reactive Arcade Operating System Inspired by the Wreck-It Ralph Universe
 
 ---
 
-## 🚀 The Experience
+## 🎯 Overview
 
-This isn't just a website; it's a living arcade cabinet. As you navigate the system, **Corruption (0–100%)** builds up, physically distorting the UI with RGB splits, screen shakes, and audible glitching.
+**ARCADE OS** simulates a networked arcade machine at *Litwak’s Arcade* that is actively being corrupted by Ralph.
 
+<<<<<<< HEAD
 ### 🛠️ Required Competition Modules
 1.  **Game Selection Screen**: `/game-select` — Choose between Niceland (Felix), Sugar Rush (Vanellope), or Hero's Duty (Calhoun).
 2.  **Character Control Panel**: `/character` — A diagnostic interface where you can modify character stability, memory shift, and latency.
@@ -39,17 +37,62 @@ Place these `.mp3` files in `/public/sounds/` to enable full system immersion:
 - `alert.mp3`: System warnings and jumpscare events.
 - `death.mp3`: Game over or sequence failure.
 - `shutdown.mp3`: OS termination sequence.
+=======
+The system dynamically degrades through a centralized corruption engine and requires the user to:
+
+1. Select a ROM
+2. Diagnose the anomaly
+3. Repair system instability
+4. Successfully launch and play the game
+5. Survive corruption resurgence
+6. Perform a full system purge
+
+The result is a fully interactive, cinematic arcade OS simulation.
 
 ---
 
-## 🤫 Easter Eggs (Top Secret)
+## ✅ Problem Statement Compliance
 
-### 1. The Konami Code
-At any time, type the following on your physical keyboard:  
-`↑ ↑ ↓ ↓ ← → ← → B A`
-- **Success**: Unlocks **DEVELOPER MODE** (Rainbow UI + Reset).
-- **Failure**: Triggers a **"GOING TURBO"** event, crashing the OS.
+This project implements the **Arcade Game Operating System – Wreck-It Ralph Theme** requirements:
 
+### Required Modules
+
+* ✔ Game Selection Screen
+* ✔ Character Control Panel
+* ✔ Glitch Repair System
+* ✔ Game Status Monitor
+
+### Required Flow
+
+Select Game → Select Character → Fix Glitch → Restart Game
+
+Implemented Flow:
+Boot → Game Select → Character → Repair → Play → Restart → Boot
+
+The system contains multiple interactive screens, complete navigation, and a full user loop.
+
+---
+
+## 🧠 Core Architecture
+
+### 🔥 Global Corruption Engine
+
+* Centralized state (0–100%)
+* CSS-variable driven visual distortion (`--corruption-intensity`)
+* Controls glitch, shake, flicker, distortion intensity
+* Debounced and clamped for stability
+* Auto-recovery safeguards
+
+Corruption is not decorative — it drives UI behavior and gameplay difficulty.
+>>>>>>> 38ca047ae9b0bb9aa78413c8b81b89df6ed381e4
+
+---
+
+### 🕹️ Playable Game Module
+
+After successful repair, the selected ROM launches.
+
+<<<<<<< HEAD
 ### 2. Secret Input Module
 Can't find a keyboard? Look for the tiny **Terminal Icon** in the top-left corner. It opens a virtual gamepad for Konami input via mouse/touch.
 
@@ -58,14 +101,90 @@ Click the scrolling title marquee **5 times** to crash the meeting and see Ralph
 
 ### 4. Critical Cake (Interactive)
 If you reach **85% Corruption**, the "Critical Cake" may appear. **Click to smash it** with the hammer to instantly drop corruption by 15%.
+=======
+Example (Fix-It Felix Mode):
+
+* Falling repair targets
+* Click-to-fix mechanic
+* 20-second survival timer
+* Stability meter interaction
+* Win/Lose logic
+* Corruption resurgence event
+
+The system is not only repaired — it becomes playable.
+>>>>>>> 38ca047ae9b0bb9aa78413c8b81b89df6ed381e4
 
 ---
 
-## 💻 Tech Stack
-- **Framework**: Next.js 15 (App Router)
-- **UI Components**: Shadcn UI + Radix Primitives
-- **Styling**: Tailwind CSS + Custom Glitch Keyframes
-- **State**: React Context (`CorruptionProvider`)
-- **Icons**: Lucide React
+### 🛠 Glitch Repair System
 
+* Hammer-based mini-game
+* Countdown timer
+* Score tracking
+* Real-time corruption reduction
+* Difficulty scaling based on instability
+* Fail state increases corruption
+* Guaranteed resolution (no soft-lock)
+
+<<<<<<< HEAD
 *© 1982-2024 Litwak’s Arcade. All Rights Reserved.*
+=======
+---
+
+### 📊 Game Status Monitor
+
+Explicitly labeled system HUD displaying:
+
+* Stability %
+* CPU Heat
+* Error Frequency
+* Operational Logs
+* Active ROM
+
+The monitor is persistent and reactive to system state.
+
+---
+
+### 🎮 Character Control Panel
+
+Interactive diagnostic suite allowing:
+
+* Sprite Stability toggling
+* Memory Shift simulation
+* ROM Emulation trigger
+* Direct anomaly control
+
+All toggles affect system state safely.
+
+---
+
+## 🎨 Immersion Features
+
+* CRT curvature simulation
+* Scanline overlay
+* Metallic arcade cabinet frame
+* Animated marquee header
+* Pixel-shatter buttons
+* World-specific color themes
+* Dynamic corruption distortion
+* “Going Turbo” spike event
+* Cupcake anomaly interaction
+* Bad-Anon hidden overlay
+* Konami Code Developer Mode
+* Virtual gamepad input
+
+---
+
+## 🔊 Sound System
+
+Integrated via HTML5 Audio API.
+
+Includes:
+
+* Boot sequence
+* Coin insert
+* Button clicks
+* Glitch distortion
+* Hammer repair
+* Alert be
+>>>>>>> 38ca047ae9b0bb9aa78413c8b81b89df6ed381e4
