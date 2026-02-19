@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 const KONAMI_CODE = [
   'arrowup', 'arrowup', 
@@ -13,32 +13,47 @@ const KONAMI_CODE = [
 
 /**
  * Hook to listen for the Konami Code sequence globally.
- * Now supports custom 'konami-key' events for virtual input.
+ * Fixed to avoid state updates during render by moving side effects 
+ * out of the functional state update.
  */
 export function useKonamiCode(onSuccess: () => void) {
   const [input, setInput] = useState<string[]>([]);
+  // Use a ref to store the latest onSuccess to avoid re-binding listeners too often
+  const callbackRef = useRef(onSuccess);
+  
+  useEffect(() => {
+    callbackRef.current = onSuccess;
+  }, [onSuccess]);
 
   const processKey = useCallback((key: string) => {
     const normalizedKey = key.toLowerCase();
+    
     setInput(prev => {
       const nextInput = [...prev, normalizedKey].slice(-KONAMI_CODE.length);
+      
+      // Check if code is matched
       if (nextInput.join(',') === KONAMI_CODE.join(',')) {
-        onSuccess();
-        return []; // Reset after success
+        // We schedule the callback to run after the state update to avoid
+        // "update while rendering" warnings.
+        setTimeout(() => {
+          callbackRef.current();
+        }, 0);
+        return []; // Reset sequence
       }
+      
       return nextInput;
     });
-  }, [onSuccess]);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
       
-      // Prevent scrolling when entering arrow keys for the code
-      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) {
-        e.preventDefault();
+      // Track valid keys
+      const validKeys = ['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'a', 'b'];
+      if (validKeys.includes(key)) {
+        processKey(key);
       }
-      processKey(key);
     };
 
     const handleCustomKey = (e: any) => {
