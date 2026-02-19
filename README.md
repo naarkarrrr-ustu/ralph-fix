@@ -1,169 +1,293 @@
-🕹️ ARCADE OS – System Corruption Mode
-A Reactive Arcade Operating System Inspired by the Wreck-It Ralph Universe
-🎯 Overview
+# 🕹️ ARCADE OS – System Corruption Mode  
+### A Reactive Arcade Operating System Inspired by the Wreck-It Ralph Universe
 
-ARCADE OS simulates a networked arcade machine at Litwak’s Arcade that is actively being corrupted by Ralph.
+---
 
-The system dynamically degrades through a centralized corruption engine and requires the user to:
+## 🎯 Overview
 
-Select a ROM
+**ARCADE OS** simulates a networked arcade machine at *Litwak’s Arcade* that is actively being corrupted by Ralph.
 
-Diagnose the anomaly
+Instead of building a static glitch-themed website, this project models a **reactive arcade operating system** where system instability dynamically affects visuals, gameplay, and difficulty.
 
-Repair system instability
+Users must:
 
-Successfully launch and play the game
+1. Insert Coin & Boot the Kernel  
+2. Select a ROM (Game World)  
+3. Diagnose the Character Anomaly  
+4. Repair the Corrupted System  
+5. Successfully Play the Restored ROM  
+6. Purge Ralph and Reset the OS  
 
-Survive corruption resurgence
+The experience forms a complete, playable arcade lifecycle.
 
-Perform a full system purge
+---
 
-The result is a fully interactive, cinematic arcade OS simulation.
+## ✅ Problem Statement Compliance
 
-✅ Problem Statement Compliance
+### Required Modules
+- ✔ Game Selection Screen  
+- ✔ Character Control Panel  
+- ✔ Glitch Repair System  
+- ✔ Game Status Monitor  
 
-This project implements the Arcade Game Operating System – Wreck-It Ralph Theme requirements:
+### Required Flow
+Select Game → Select Character → Fix Glitch → Restart Game  
 
-Required Modules
+### Implemented Flow
+`/boot → /game-select → /character → /repair → /play → /restart → /boot`
 
-✔ Game Selection Screen
+The system contains:
+- Multiple distinct interactive screens  
+- Functional navigation between all modules  
+- A complete playable user loop  
+- Clear reset and completion states  
 
-✔ Character Control Panel
+---
 
-✔ Glitch Repair System
+## 🧠 Core Architecture
 
-✔ Game Status Monitor
+### 🔥 Global Corruption Engine
 
-Required Flow
+At the heart of the system is a centralized **CorruptionProvider** (React Context).
 
-Select Game → Select Character → Fix Glitch → Restart Game
+- Corruption Level: 0–100% (strictly clamped)
+- Drives a dynamic CSS variable: `--corruption-intensity`
+- Controls:
+  - RGB split distortion
+  - Screen shake amplitude
+  - Flicker intensity
+  - Visual instability
+  - Mini-game difficulty scaling
+  - Audio distortion
 
-Implemented Flow:
-Boot → Game Select → Character → Repair → Play → Restart → Boot
+Corruption is not decorative — it actively influences gameplay and UI behavior.
 
-The system contains multiple interactive screens, complete navigation, and a full user loop.
+---
 
-🧠 Core Architecture
-🔥 Global Corruption Engine
+## 🕹️ Modules Breakdown
 
-Centralized state (0–100%)
+---
 
-CSS-variable driven visual distortion (--corruption-intensity)
+### 1️⃣ `/boot` — Kernel Initialization
 
-Controls glitch, shake, flicker, distortion intensity
+**Purpose:** Reset system and unlock audio safely.
 
-Debounced and clamped for stability
+- “INSERT COIN TO START” interaction
+- Resets corruption to 0%
+- Initializes Litwak-3000 Kernel
+- Audio unlock compliant with browser policies
 
-Auto-recovery safeguards
+---
 
-Corruption is not decorative — it drives UI behavior and gameplay difficulty.
+### 2️⃣ `/game-select` — ROM Selector
 
-🕹️ Playable Game Module
+**Purpose:** Choose arcade world.
 
-After successful repair, the selected ROM launches.
+- Grid-based ROM selection
+- World-specific accent themes
+- Hover glitch effects
+- Corruption increases upon ROM load
 
-Example (Fix-It Felix Mode):
+Worlds:
+- Fix-It Felix Jr.
+- Sugar Rush
+- Hero’s Duty
 
-Falling repair targets
+---
 
-Click-to-fix mechanic
+### 3️⃣ `/character` — Diagnostic Control Panel
 
-20-second survival timer
+**Purpose:** Identify and manage the Ralph anomaly.
 
-Stability meter interaction
+- SYSTEM MONITOR HUD
+- Stability indicator
+- Toggle-based character controls
+- Real-time system logs
 
-Win/Lose logic
+User can:
+- Inspect sprite stability
+- Emulate ROM state
+- Trigger repair sequence
 
-Corruption resurgence event
+---
 
-The system is not only repaired — it becomes playable.
+### 4️⃣ `/repair` — Glitch Repair Mini-Game
 
-🛠 Glitch Repair System
+**Purpose:** Restore corrupted ROM.
 
-Hammer-based mini-game
+Mechanics:
+- Hammer-based interaction
+- Smash 5 corruption fragments
+- Countdown timer
+- Real-time corruption reduction
+- Fail state increases instability
 
-Countdown timer
+Features:
+- Difficulty scaling based on corruption level
+- Safe interval cleanup
+- Guaranteed win/lose resolution
 
-Score tracking
+---
 
-Real-time corruption reduction
+### 5️⃣ `/play` — Playable ROM Simulation
 
-Difficulty scaling based on instability
+**Purpose:** Provide gameplay payoff after repair.
 
-Fail state increases corruption
+Mechanics (Fix-It Felix style):
+- 20-second survival
+- Falling targets
+- Click to maintain stability
+- Score tracking
+- Lose if stability drops to 0
 
-Guaranteed resolution (no soft-lock)
+Corruption may resurge mid-play, triggering crash.
 
-📊 Game Status Monitor
+This completes the arcade narrative loop.
 
-Explicitly labeled system HUD displaying:
+---
 
-Stability %
+### 6️⃣ `/restart` — Purge Protocol
 
-CPU Heat
+**Purpose:** Remove Ralph and reset OS.
 
-Error Frequency
+- “RALPH PURGED”
+- Factory reset animation
+- Corruption reset to 0%
+- Returns to `/boot`
 
-Operational Logs
+---
 
-Active ROM
+## 📊 Game Status Monitor
 
-The monitor is persistent and reactive to system state.
+Persistent, labeled HUD displaying:
 
-🎮 Character Control Panel
+- Stability %
+- CPU Heat
+- Error Frequency
+- Active ROM
+- Real-time System Logs
 
-Interactive diagnostic suite allowing:
+Log size is capped to prevent memory growth.
 
-Sprite Stability toggling
+---
 
-Memory Shift simulation
+## 🔊 Audio System
 
-ROM Emulation trigger
-
-Direct anomaly control
-
-All toggles affect system state safely.
-
-🎨 Immersion Features
-
-CRT curvature simulation
-
-Scanline overlay
-
-Metallic arcade cabinet frame
-
-Animated marquee header
-
-Pixel-shatter buttons
-
-World-specific color themes
-
-Dynamic corruption distortion
-
-“Going Turbo” spike event
-
-Cupcake anomaly interaction
-
-Bad-Anon hidden overlay
-
-Konami Code Developer Mode
-
-Virtual gamepad input
-
-🔊 Sound System
-
-Integrated via HTML5 Audio API.
+Built using HTML5 Audio API with custom React hooks.
 
 Includes:
+- Boot sound
+- Coin insert
+- Button clicks
+- Glitch distortion
+- Hammer repair
+- Shutdown sequence
 
-Boot sequence
+Audio:
+- Preloaded
+- User-unlocked
+- Toggle-enabled
+- Non-blocking
 
-Coin insert
+---
 
-Button clicks
+## 🎨 Visual System
 
-Glitch distortion
+- CRT curvature simulation
+- Scanline overlay
+- Metallic arcade cabinet frame
+- Animated marquee header
+- Pixel-shatter buttons
+- RGB glitch distortion
+- Corruption-reactive visual scaling
+- Controlled shake & flicker limits
 
-Hammer repair
+All visuals are dynamically controlled by CSS variables.
 
-Alert be
+---
+
+## ☁ Firebase Integration
+
+- Firestore leaderboard for repair scores
+- Async-safe write operations
+- Non-blocking fetch
+- Graceful offline fallback
+- No UI dependency on network success
+
+Simulates a connected Litwak arcade network.
+
+---
+
+## 🎭 Easter Eggs
+
+### 🕹 Konami Code
+`↑ ↑ ↓ ↓ ← → ← → B A`
+
+- Correct: Developer Mode (rainbow glitch + stability reset)
+- Incorrect: “Going Turbo” crash
+
+---
+
+### 🧁 Cupcake Anomaly
+At >85% corruption:
+- Rare glitch event
+- Smash to reduce corruption instantly
+
+---
+
+### 👥 Bad-Anon Meeting
+Click marquee 5 times:
+- Hidden villain support overlay
+
+---
+
+### 🎮 Virtual Gamepad
+Accessible input for non-keyboard devices.
+
+---
+
+## 🛡 Stability & Safety
+
+- Corruption clamped 0–100
+- Debounced updates
+- No interval stacking
+- Timer cleanup on unmount
+- Safe route refresh
+- Back-button resilience
+- Memory leak prevention
+- Console-clean deployment
+
+Designed to withstand aggressive demo interaction.
+
+---
+
+## 🏆 Why This Project Stands Out
+
+Most glitch-based designs are aesthetic overlays.
+
+ARCADE OS models:
+
+- A reactive instability engine
+- Gameplay influenced by system state
+- A complete arcade lifecycle
+- Narrative cohesion
+- Networked persistence
+- Technical safety under high distortion
+
+This is not just a UI experiment.
+
+It is a playable arcade operating system simulation.
+
+---
+
+## 🚀 Deployment
+
+- Next.js 15 (App Router)
+- React 19
+- Tailwind CSS + Custom HSL Variables
+- ShadCN UI (Radix-based)
+- Lucide Icons
+- Firebase Firestore
+- Vercel Deployment
+
+Fully production-ready and competition stable.
