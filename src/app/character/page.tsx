@@ -22,6 +22,10 @@ export default function CharacterPage() {
   const { playSound } = useSoundEffect();
   const [warnings, setWarnings] = useState<string[]>([]);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  
+  // Tricky Button State
+  const [repairHoverCount, setRepairHoverCount] = useState(0);
+  const [buttonOffset, setButtonOffset] = useState({ x: 0, y: 0 });
 
   const characters = [
     { id: 'ralph-char', name: 'WRECK-IT RALPH', type: 'DESTRUCTION_ENGINE', hint: 'ralph smash' },
@@ -67,6 +71,17 @@ export default function CharacterPage() {
     increaseCorruption(5);
   };
 
+  const handleRepairHover = () => {
+    if (repairHoverCount < 3) {
+      setRepairHoverCount(prev => prev + 1);
+      setButtonOffset({
+        x: (Math.random() - 0.5) * 300,
+        y: (Math.random() - 0.5) * 150
+      });
+      playSound('glitch');
+    }
+  };
+
   return (
     <div className="h-full flex p-8 gap-8 relative overflow-hidden">
       <CorruptionOverlay />
@@ -85,7 +100,7 @@ export default function CharacterPage() {
           </div>
         </div>
 
-        {/* Character Specific Control Actions (Problem Statement Compliance) */}
+        {/* Character Specific Control Actions */}
         <div className="p-4 bg-card border border-secondary/20 rounded arcade-glow-secondary">
           <div className="flex items-center gap-2 mb-4">
              <Sliders size={14} className="text-secondary" />
@@ -157,9 +172,33 @@ export default function CharacterPage() {
           <div className="absolute -right-4 -top-4 w-24 h-24 border-r-2 border-t-2 border-secondary/50 pointer-events-none group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
         </div>
 
-        <div className="mt-12 flex gap-4">
+        <div className="mt-12 flex gap-4 relative">
           <PixelBreakButton variant="outline" className="px-8" onClick={() => { increaseCorruption(5); playSound('glitch'); }}>EMULATE_ROM</PixelBreakButton>
-          <PixelBreakButton className="px-12 bg-secondary border-secondary hover:bg-secondary/80" onClick={() => { playSound('click'); router.push('/repair'); }}>REPAIR_SYSTEM</PixelBreakButton>
+          
+          <div 
+            className="transition-all duration-300"
+            style={{ 
+              transform: repairHoverCount < 3 
+                ? `translate(${buttonOffset.x}px, ${buttonOffset.y}px)` 
+                : 'translate(0, 0)' 
+            }}
+          >
+            <PixelBreakButton 
+              className={cn(
+                "px-12 bg-secondary border-secondary hover:bg-secondary/80",
+                repairHoverCount < 3 ? "animate-bounce" : ""
+              )} 
+              onMouseEnter={handleRepairHover}
+              onClick={() => { 
+                if (repairHoverCount >= 3) {
+                  playSound('click'); 
+                  router.push('/repair'); 
+                }
+              }}
+            >
+              {repairHoverCount < 3 ? "CATCH_ME_IF_YOU_CAN" : "REPAIR_SYSTEM"}
+            </PixelBreakButton>
+          </div>
         </div>
       </div>
 
