@@ -10,6 +10,7 @@ import { useKonamiCode } from '@/hooks/use-konami-code';
 import { KonamiOverlay } from '@/components/KonamiOverlay';
 import { BadAnonOverlay } from '@/components/BadAnonOverlay';
 import { CupcakeJumpscare } from '@/components/CupcakeJumpscare';
+import { VirtualGamepad } from '@/components/VirtualGamepad';
 import { useSoundEffect } from '@/hooks/use-sound-effect';
 
 /**
@@ -46,6 +47,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       <KonamiOverlay />
       <BadAnonOverlay />
       <CupcakeJumpscare />
+      <VirtualGamepad />
 
       {/* Cinematic Global Overlays */}
       <div className="fixed inset-0 crt-overlay pointer-events-none z-[9999]" />
