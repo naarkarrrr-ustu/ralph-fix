@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCorruption } from '@/app/context/corruption-context';
 import { SystemLog } from '@/components/SystemLog';
 import { SoundToggle } from '@/components/SoundToggle';
@@ -14,12 +14,18 @@ import { useRouter } from 'next/navigation';
 
 /**
  * Client-side layout wrapper that handles global system logic, 
- * audio, and overlays.
+ * audio, and overlays. Includes a mounting guard to prevent 
+ * hydration mismatches for dynamic UI elements.
  */
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { setDevMode, resetCorruption, handleTitleClick, increaseCorruption } = useCorruption();
   const { playSound } = useSoundEffect();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Initialize the Konami Code listener globally
   useKonamiCode(
@@ -41,37 +47,42 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="h-full w-full relative p-4">
-      {/* Global Arcade Frame - Cabinet Exterior */}
+      {/* Global Arcade Frame - Cabinet Exterior (Safe for SSR) */}
       <div className="fixed inset-0 arcade-border pointer-events-none z-[10000]" />
       
-      {/* Top Marquee Bar */}
-      <div className="fixed top-0 left-0 w-full bg-black h-8 z-[10001] border-b border-primary/40 flex items-center overflow-hidden">
-         <div 
-          onClick={handleTitleClick}
-          className="marquee text-[10px] font-bold text-primary tracking-[0.4em] uppercase cursor-pointer select-none"
-         >
-            LITWAK’S ARCADE OS – FIX IT BEFORE RALPH BREAKS IT • SYSTEM INTEGRITY: CRITICAL • INSERT COIN TO PLAY • RALPH DETECTED • SUGAR RUSH • HERO'S DUTY • FIX-IT FELIX JR. • 
-         </div>
-      </div>
+      {/* HUD and Overlays - Only render after hydration to prevent mismatches */}
+      {mounted && (
+        <>
+          {/* Top Marquee Bar */}
+          <div className="fixed top-0 left-0 w-full bg-black h-8 z-[10001] border-b border-primary/40 flex items-center overflow-hidden">
+             <div 
+              onClick={handleTitleClick}
+              className="marquee text-[10px] font-bold text-primary tracking-[0.4em] uppercase cursor-pointer select-none"
+             >
+                LITWAK’S ARCADE OS – FIX IT BEFORE RALPH BREAKS IT • SYSTEM INTEGRITY: CRITICAL • INSERT COIN TO PLAY • RALPH DETECTED • SUGAR RUSH • HERO'S DUTY • FIX-IT FELIX JR. • 
+             </div>
+          </div>
 
-      <SoundToggle />
-      <KonamiOverlay />
-      <BadAnonOverlay />
-      <CupcakeJumpscare />
-      <VirtualGamepad />
+          <SoundToggle />
+          <KonamiOverlay />
+          <BadAnonOverlay />
+          <CupcakeJumpscare />
+          <VirtualGamepad />
 
-      {/* Cinematic Global Overlays */}
-      <div className="fixed inset-0 crt-overlay pointer-events-none z-[9999]" />
-      <div className="scanline" />
-      <div className="crt-curve" />
-      <div className="vignette" />
+          {/* Cinematic Global Overlays */}
+          <div className="fixed inset-0 crt-overlay pointer-events-none z-[9999]" />
+          <div className="scanline" />
+          <div className="crt-curve" />
+          <div className="vignette" />
+          
+          <SystemLog />
+        </>
+      )}
       
-      {/* Main App Container */}
+      {/* Main App Container - Always rendered for SSR consistency */}
       <main className="h-full w-full relative z-10 pb-10 pt-8 rounded-[40px] overflow-hidden">
         {children}
       </main>
-
-      <SystemLog />
     </div>
   );
 }
