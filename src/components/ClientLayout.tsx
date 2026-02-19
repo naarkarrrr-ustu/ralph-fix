@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -16,9 +17,9 @@ import { useRouter } from 'next/navigation';
  * Client-side layout wrapper that handles global system logic, 
  * audio, and overlays. 
  * 
- * To prevent hydration mismatches, we ensure the core structural 
- * elements (Cabinet Frame and Main Content) are always rendered 
- * in the same order on both Server and Client.
+ * FIXED: Stabilized the sibling order between the cabinet border, 
+ * the main content, and the client-only HUD elements to prevent 
+ * hydration mismatches.
  */
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -50,16 +51,16 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="h-full w-full relative p-4">
-      {/* 1. Global Arcade Frame - Static sibling at index 0 */}
+      {/* 1. Global Arcade Frame - Static sibling at index 0 (Always rendered) */}
       <div className="fixed inset-0 arcade-border pointer-events-none z-[10000]" />
       
-      {/* 2. Main App Container - Static sibling at index 1 */}
+      {/* 2. Main App Container - Static sibling at index 1 (Always rendered) */}
       <main className="h-full w-full relative z-10 pb-10 pt-8 rounded-[40px] overflow-hidden">
         {children}
       </main>
 
-      {/* 3. System HUD Container - Static sibling at index 2 (Always present, content is dynamic) */}
-      <div id="arcade-system-hud" className="contents">
+      {/* 3. HUD and Overlays Container - Static sibling at index 2 (Client-only contents) */}
+      <div id="arcade-system-hud" className="relative z-[10001]">
         {mounted && (
           <>
             {/* Top Marquee Bar */}
